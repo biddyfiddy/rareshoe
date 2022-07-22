@@ -11,7 +11,7 @@ const {abi: legacyAbi, legacyByteCode, address: legacyAddress} = require("./src/
 const og1Address = og1Json.address.toLowerCase();
 const og1TokenIds = og1Json.tokenIds;
 
-const capsulesJson  = require('./src/abi/capsules.json');
+const capsulesJson = require('./src/abi/capsules.json');
 
 const capsulesAddress = capsulesJson.address.toLowerCase();
 const capsulesAbi = capsulesJson.abi;
@@ -84,7 +84,7 @@ const config = {
     }
 }
 
-const getAllowedCapsules = async(toAddress, fromAddress) => {
+const getAllowedCapsules = async (toAddress, fromAddress) => {
     let genesisBurned = await getNumBurned(toAddress, fromAddress, legacyAddress.toLowerCase());
     let og1Burned = await getNumBurned(toAddress, fromAddress, og1Address.toLowerCase());
     let og2Burned = await getNumBurned(toAddress, fromAddress, og2Address.toLowerCase());
@@ -113,12 +113,10 @@ const getNumCapsulesAndTypes = async (address) => {
         });
         if (owner.toString().toLowerCase() === address) {
             let uri = await contract.tokenURI(i)
-            console.log(uri);
             await axios.get(uri, config).then(response => {
                 let data = response.data;
                 let color = data.color;
                 if (color) {
-                    console.log(color)
                     if (color === "red") {
                         red++;
                     } else if (color === "blue") {
@@ -135,10 +133,10 @@ const getNumCapsulesAndTypes = async (address) => {
 
     return new Promise((resolve, reject) => {
         resolve({
-            "red" : red,
-            "yellow" : yellow,
-            "blue" : blue,
-            "total": red+yellow+blue
+            "red": red,
+            "yellow": yellow,
+            "blue": blue,
+            "total": red + yellow + blue
         });
     });
 };
@@ -150,10 +148,9 @@ const getNumBurned = async (toAddress, fromAddress, contractAddress) => {
     return axios.get(`https://api${network}.etherscan.io/api?module=account&action=tokennfttx&address=${toAddress}&startblock=0&endblock=999999999&sort=asc&apikey=${API_KEY}`).then(response => {
         let responseData = response.data;
         let burns = responseData.result;
-        console.log(burns);
         let numBurns = 0;
         burns.forEach(burn => {
-            if (burn.contractAddress === og1Address ) {
+            if (burn.contractAddress === og1Address) {
                 if (og1TokenIds.includes(burn.tokenID) && burn.from === fromAddress && burn.to === toAddress && contractAddress === burn.contractAddress) {
                     numBurns++;
                 }
@@ -166,19 +163,19 @@ const getNumBurned = async (toAddress, fromAddress, contractAddress) => {
             }
         })
         return {
-            numBurns : numBurns
+            numBurns: numBurns
         };
     }).catch(err => {
-            console.log(err);
-        });
+        console.log(err);
+    });
 };
 
-const getNumHeld = async(contractAddress, contractAbi, walletAddress) => {
-        let provider = new ethers.providers.EtherscanProvider(ETHER_NETWORK, API_KEY);
-        const contract = new ethers.Contract(contractAddress, contractAbi, provider);
+const getNumHeld = async (contractAddress, contractAbi, walletAddress) => {
+    let provider = new ethers.providers.EtherscanProvider(ETHER_NETWORK, API_KEY);
+    const contract = new ethers.Contract(contractAddress, contractAbi, provider);
 
-        return await contract.balanceOf(walletAddress).then(data => {
-            return data.toString();
+    return await contract.balanceOf(walletAddress).then(data => {
+        return data.toString();
     })
 }
 
@@ -210,7 +207,7 @@ const pinDataToPinata = async (nftJson) => {
             return response.data.IpfsHash;
         }
     }).catch(error => {
-            console.log(error);
+        console.log(error);
     })
 };
 
@@ -233,18 +230,17 @@ const mintToken = async (toAddress, tokenUri) => {
     let signedTxn = await wallet.sendTransaction(rawTxn)
     return signedTxn.wait().then(reciept => {
 
-    if (reciept) {
-        return signedTxn.hash;
-    } else {
-        console.log("Error submitting transaction")
-    }
+        if (reciept) {
+            return signedTxn.hash;
+        } else {
+            console.log("Error submitting transaction")
+        }
     });
 };
 
 app.post("/token", async (req, res) => {
     const body = req.body
     const uri = body.uri;
-    console.log(uri);
 
     await axios.get(uri).then(response => {
         return res.status(200).json(response.data)
@@ -262,7 +258,6 @@ app.post("/token", async (req, res) => {
 app.post("/inquiry", async (req, res) => {
 
     const body = req.body
-    console.log(body);
     const toAddress = body.toAddress.toLowerCase()
     const fromAddress = body.fromAddress.toLowerCase()
     const contractAddress = body.contractAddress.toLowerCase()
@@ -278,10 +273,8 @@ app.post("/inquiry", async (req, res) => {
 
 app.post("/capsules", async (req, res) => {
     const body = req.body
-    console.log(body);
     const address = body.address.toLowerCase()
     let response = await getNumCapsulesAndTypes(address);
-    console.log(response);
     if (response) {
         res.status(200).json(response);
     } else {
@@ -295,9 +288,9 @@ app.post("/allowed", async (req, res) => {
     const fromAddress = body.fromAddress.toLowerCase()
     const allowed = await getAllowedCapsules(toAddress, fromAddress);
     if (allowed) {
-        res.status(200).json({ allowed});
+        res.status(200).json({allowed});
     } else {
-        res.status(200).json({ allowed : 0});
+        res.status(200).json({allowed: 0});
     }
 });
 
@@ -320,7 +313,7 @@ app.post("/mintBurn", async (req, res) => {
     console.log(`${allowedCapsules} allowed, ${quantity} requested`)
     if (quantity > allowedCapsules) {
         res.status(500).json({
-            message : `Could not mint: not enough burned tokens to generate ${quantity} capsules.  ${allowedCapsules} allowed`
+            message: `Could not mint: not enough burned tokens to generate ${quantity} capsules.  ${allowedCapsules} allowed`
         });
         return;
     }
@@ -328,7 +321,7 @@ app.post("/mintBurn", async (req, res) => {
 
     // mint them
     hashes = [];
-    for (let i=0; i<quantity; i++) {
+    for (let i = 0; i < quantity; i++) {
 
         const nftJson = await getRandomCapsuleColor();
 
@@ -337,7 +330,7 @@ app.post("/mintBurn", async (req, res) => {
             continue;
         }
 
-        const tokenResult = await mintToken(fromAddress, tokenUri);
+        const tokenResult = await mintToken(toAddress, tokenUri);
         if (!tokenResult) {
             continue;
         }
@@ -349,7 +342,7 @@ app.post("/mintBurn", async (req, res) => {
     }
 
     res.status(200).json({
-        txHashes : hashes
+        txHashes: hashes
     })
 
 });

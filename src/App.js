@@ -217,8 +217,6 @@ class App extends React.Component {
 
         let response = await fetch("/capsules", requestOptions)
         await response.json().then(result => {
-            console.log(result)
-
             this.setState({
                 redCapsules: result.red,
                 blueCapsules: result.blue,
@@ -294,8 +292,6 @@ class App extends React.Component {
 
                 let response = await fetch("/token", requestOptions).catch(err => {
                     console.log(err);
-
-                    // no op
                 })
                 if (response) {
                     let json = await response.json();
@@ -359,7 +355,6 @@ class App extends React.Component {
 
         let response = await fetch("/mintBurn", requestOptions)
         await response.json().then(result => {
-            console.log(result)
             // Likely an error
             if (result.message) {
                 this.setState({
@@ -557,7 +552,7 @@ class App extends React.Component {
 
                                 <Typography style={{padding: "20px", fontFamily: 'Montserrat'}}>
                                 {
-                                    mintTransactions.map(tx => <a style={{fontSize: "10px"}} href={tx}>{tx.substring(tx.lastIndexOf("/") + 1)}</a>)
+                                    mintTransactions.map(tx => <p><a style={{fontSize: "10px"}} href={tx}>{tx.substring(tx.lastIndexOf("/") + 1)}</a></p>)
                                 }</Typography>
                             </Typography>}
 
@@ -666,10 +661,10 @@ class App extends React.Component {
                             <div style={{marginTop: "50px", marginBottom: "10px"}}>
                                 You have burned {amountGenesisBurned} Genesis Token(s) and {amountOgBurned} OG Token(s).
                             </div>
-                            <div style={{marginTop: "50px", marginBottom: "10px"}}>
+                            <div style={{marginBottom: "10px"}}>
                                 You have minted {totalCapsules} capsule(s).
                             </div>
-                            <div style={{marginTop: "50px", marginBottom: "10px"}}>
+                            <div style={{marginBottom: "30px"}}>
                                 You can mint up to {allowedCapsules} capsule(s).
                             </div>
                             <div>
@@ -690,7 +685,7 @@ class App extends React.Component {
                                     <p>Select Amount of Capsules to Mint</p>
                                     <ArrowBackIosIcon onClick={this.decrementMintQuantity}/><div style={{marginLeft: "15px", marginRight: "15px", display : "inline"}}>{mintQuantity}</div><ArrowForwardIosIcon onClick={this.incrementMintQuantity}/>
                                     </div>
-                                <ColorButton variant="contained" style={{textAlign: "center"}}
+                                <ColorButton variant="contained" style={{marginTop: "20px", textAlign: "center"}}
                                              onClick={this.mint}>Mint</ColorButton>
                                 </div>
                             </div>
