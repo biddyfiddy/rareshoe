@@ -1,6 +1,8 @@
 import React from "react";
 import "./App.css";
 import CircularProgress from '@mui/material/CircularProgress';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Modal from '@mui/material/Modal';
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
@@ -66,7 +68,6 @@ const style = {
 // TODO : Validate post inputs
 // TODO : Add checks to all express items that could fail
 // TODO : Update OG collection description
-// TODO : Add ability to -/+ amount of capsules to mint
 // TODO : Disable burn buttons when nothing is selected
 // TODO : make images more visible when they are being loaded
 // TODO : mint response modal
@@ -78,15 +79,13 @@ const style = {
 
 // TEST TODO
 // TODO: Create more tokens for testing for everyone's wallet
-// TODO: find hosting website used earlier
-// TODO: extract sensitive vars and add them to CI vars
 // TODO: point to rareshoe.club
 // TODO: verify all images work on the web
 
 
 // OPS TODO
 // TODO: deploy contracts
-// TODO: get abi / bytecode for old Genesis and OG contracts
+// TODO: get abi / bytecode for old Genesis and OG contracts, set token ids
 
 class App extends React.Component {
 
@@ -94,13 +93,22 @@ class App extends React.Component {
         super(props);
         this.state = {
             burnModalOpen: false,
+            mintModalOpen: false,
             accounts: null,
+            mintQuantity: 0,
+            mintError: undefined,
+            mintTransactions: [],
             genesisTokenUris: [],
             ogTokenUris: [],
             amountGenesisBurned: 0,
             allowedCapsules: 0,
             amountOgBurned: 0,
+            redCapsules: 0,
+            blueCapsules: 0,
+            yellowCapsules: 0,
+            totalCapsules: 0,
             gettingBurned: false,
+            minting: false,
             view: "home"
         }
         this.connectMetamask = this.connectMetamask.bind(this);
@@ -111,18 +119,48 @@ class App extends React.Component {
         this.mint = this.mint.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
+        this.handleMintModalClose = this.handleMintModalClose.bind(this);
+        this.handleMintModalOpen = this.handleMintModalOpen.bind(this);
         this.setView = this.setView.bind(this);
+        this.decrementMintQuantity = this.decrementMintQuantity.bind(this);
+        this.incrementMintQuantity = this.incrementMintQuantity.bind(this);
+    }
+
+    decrementMintQuantity() {
+        let { mintQuantity } = this.state
+        this.setState({
+            mintQuantity: mintQuantity === 0 ? 0 : mintQuantity - 1
+        })
+    }
+
+    incrementMintQuantity() {
+        let { mintQuantity,  allowedCapsules} = this.state
+        this.setState({
+            mintQuantity: mintQuantity ===  allowedCapsules ? allowedCapsules :  mintQuantity + 1
+        })
     }
 
     handleClose() {
         this.setState({
-            burnModalOpen: false
+            burnModalOpen: false,
         });
     }
 
     handleOpen() {
         this.setState({
             burnModalOpen: true
+        });
+    }
+
+    handleMintModalOpen()  {
+        this.setState({
+            mintModalOpen: true,
+        });
+    }
+
+    handleMintModalClose() {
+        this.setState({
+            mintModalOpen: false
         });
     }
 
@@ -146,6 +184,8 @@ class App extends React.Component {
             let amountOgBurned = await this.getBurnedTokenAmount(ogAddress);
             let allowedCapsules = await this.getAllowedCapsules(ogAddress);
 
+            await this.getOwnedCapsules();
+
             this.setState({
                 allowedCapsules,
                 genesisTokenUris: genesisUris,
@@ -155,6 +195,37 @@ class App extends React.Component {
                 gettingBurned: false
             })
         }
+    }
+
+    async getOwnedCapsules() {
+        const {accounts} = this.state;
+
+        if (!accounts || accounts.length === 0) {
+            return [];
+        }
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                address: accounts[0],
+
+            })
+        };
+
+        let response = await fetch("/capsules", requestOptions)
+        await response.json().then(result => {
+            console.log(result)
+
+            this.setState({
+                redCapsules: result.red,
+                blueCapsules: result.blue,
+                yellowCapsules: result.yellow,
+                totalCapsules: result.total
+            })
+        });
     }
 
     async connectMetamask() {
@@ -265,7 +336,45 @@ class App extends React.Component {
     }
 
     async mint() {
+        this.setState({
+            mintModalOpen: true,
+            minting: true
+        })
 
+        const {mintQuantity} = this.state;
+        const {accounts} = this.state;
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                toAddress: capsuleAddress,
+                fromAddress: accounts[0],
+                quantity: mintQuantity
+
+            })
+        };
+
+        let response = await fetch("/mintBurn", requestOptions)
+        await response.json().then(result => {
+            console.log(result)
+            // Likely an error
+            if (result.message) {
+                this.setState({
+                    mintError: result.message
+                })
+            } else if (result.txHashes) {
+                this.setState({
+                    mintTransactions : result.txHashes
+                })
+            }
+
+            this.setState({
+                minting: false
+            })
+        });
     }
 
     async getAllowedCapsules() {
@@ -363,7 +472,7 @@ class App extends React.Component {
 
     render() {
 
-        const {burnModalOpen, allowedCapsules, accounts, genesisTokenUris, view, amountGenesisBurned, amountOgBurned, gettingBurned, ogTokenUris} = this.state;
+        const {redCapsules,blueCapsules, yellowCapsules, totalCapsules, mintError, mintTransactions, minting, mintQuantity, mintModalOpen, burnModalOpen, allowedCapsules, accounts, genesisTokenUris, view, amountGenesisBurned, amountOgBurned, gettingBurned, ogTokenUris} = this.state;
         const ColorButton = styled(Button)(({theme}) => ({
             color: "#fefefe",
             backgroundColor: "#25253d",
@@ -419,6 +528,40 @@ class App extends React.Component {
                         <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description" sx={{ mt: 2 }}>
                             You have burned X tokens.  Please allow time for it to be reflected on the Etherium Main Net.
                         </Typography>
+                    </Box>
+                </Modal>
+
+                <Modal
+                    open={mintModalOpen}
+                    onClose={this.handleMintModalClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <div style={{padding: '20px'}}>
+                            <Typography style={{fontFamily: 'Montserrat', display: 'inline'}} id="modal-modal-title" variant="h6" component="h2">
+                                Minting Capsules
+                            </Typography>
+                            <CloseIcon style={{float: 'right'}} onClick={this.handleClose}></CloseIcon>
+                        </div>
+                        {minting ?
+                            <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description" sx={{ mt: 2 }}>
+                                <CircularProgress color="inherit"></CircularProgress>
+                            </Typography>
+
+                            : <div> {mintError ? <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description" sx={{ mt: 2 }}>
+                                    There was an error minting your capsules.  {mintError}
+                                    </Typography> :
+                            <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description" sx={{ mt: 2 }}>
+                                You have minted {mintTransactions.length} token(s).  Please allow time for it to be reflected on the Etherium Main Net.
+
+                                <Typography style={{padding: "20px", fontFamily: 'Montserrat'}}>
+                                {
+                                    mintTransactions.map(tx => <a style={{fontSize: "10px"}} href={tx}>{tx.substring(tx.lastIndexOf("/") + 1)}</a>)
+                                }</Typography>
+                            </Typography>}
+
+                            </div>}
                     </Box>
                 </Modal>
 
@@ -517,11 +660,40 @@ class App extends React.Component {
                         <div style={{width: "50%", marginLeft: "auto", marginRight: "auto", textAlign: "center"}}>
 
                             <h2 style={{marginTop: "50px", marginBottom: "10px"}}>Mint Capsules</h2>
-                            <div style={{marginTop: "50px", marginBottom: "10px"}}>You have burned {amountGenesisBurned} Genesis Token(s) and {amountOgBurned} OG Token(s). You
-                                can mint up to {allowedCapsules} capsule(s)
+
+                            {gettingBurned ?
+                                <CircularProgress style={{marginTop: "20px"}} color="inherit"/> : <div>
+                            <div style={{marginTop: "50px", marginBottom: "10px"}}>
+                                You have burned {amountGenesisBurned} Genesis Token(s) and {amountOgBurned} OG Token(s).
                             </div>
-                            <ColorButton variant="contained" style={{textAlign: "center"}}
-                                         onClick={this.mint}>Mint</ColorButton>
+                            <div style={{marginTop: "50px", marginBottom: "10px"}}>
+                                You have minted {totalCapsules} capsule(s).
+                            </div>
+                            <div style={{marginTop: "50px", marginBottom: "10px"}}>
+                                You can mint up to {allowedCapsules} capsule(s).
+                            </div>
+                            <div>
+
+                                <div
+                                    style={{
+                                        marginTop: "20px",
+                                        marginBottom: "20px",
+                                        padding: "5px",
+                                        borderRadius: "20px",
+                                        color: "lightgrey",
+                                        backgroundColor: "#1e1e1e",
+                                        boxShadow: "#494949 0px 0px 20px 6px"
+                                    }}
+
+                                >
+                                    <div>
+                                    <p>Select Amount of Capsules to Mint</p>
+                                    <ArrowBackIosIcon onClick={this.decrementMintQuantity}/><div style={{marginLeft: "15px", marginRight: "15px", display : "inline"}}>{mintQuantity}</div><ArrowForwardIosIcon onClick={this.incrementMintQuantity}/>
+                                    </div>
+                                <ColorButton variant="contained" style={{textAlign: "center"}}
+                                             onClick={this.mint}>Mint</ColorButton>
+                                </div>
+                            </div>
                             <div style={{
                                 paddingTop: "20px",
                                 paddingBottom: "40px",
@@ -539,7 +711,7 @@ class App extends React.Component {
                                         display: "block",
                                         paddingTop: "10px",
                                         paddingBottom: "10px"
-                                    }}>0 owned</span>
+                                    }}>{blueCapsules} owned</span>
                                 </div>
                                 <div style={{display: "inline"}}>
                                     <img src={yellow} alt="yellow" style={{
@@ -554,10 +726,10 @@ class App extends React.Component {
                                         display: "block",
                                         paddingTop: "10px",
                                         paddingBottom: "10px"
-                                    }}>0 owned</span>
+                                    }}>{yellowCapsules} owned</span>
                                 </div>
                                 <div style={{display: "inline"}}>
-                                    <img src={red} alt="green" style={{
+                                    <img src={red} alt="red" style={{
                                         borderRadius: "10px",
                                         boxShadow: "rgb(159 5 0) 0px 0px 20px 0px",
                                         width: "200px",
@@ -567,10 +739,11 @@ class App extends React.Component {
                                         display: "block",
                                         paddingTop: "10px",
                                         paddingBottom: "10px"
-                                    }}>0 owned</span>
+                                    }}>{redCapsules} owned</span>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
+                                </div>
                 }
             </div>
         );

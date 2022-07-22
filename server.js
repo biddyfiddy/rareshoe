@@ -28,6 +28,7 @@ const API_KEY = process.env.ETHER_API_KEY;
 const PINATA_API_KEY = process.env.PINATA_API_KEY;
 const PINATA_SECRET_KEY = process.env.PINATA_SECRET_KEY;
 const WALLET_KEY = process.env.WALLET_KEY;
+const ETHER_NETWORK = process.env.ETHER_NETWORK;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'build')));
@@ -93,11 +94,63 @@ const getAllowedCapsules = async(toAddress, fromAddress) => {
     });
 }
 
+const getNumCapsulesAndTypes = async (address) => {
+    let provider = new ethers.providers.EtherscanProvider(ETHER_NETWORK, API_KEY);
+    const contract = new ethers.Contract(capsulesAddress, capsulesAbi, provider);
+
+    let total = await contract.totalSupply().catch(err => {
+        return;
+    });
+
+
+    let red = 0;
+    let yellow = 0;
+    let blue = 0;
+
+    for (let i = 0; i < total; i++) {
+        let owner = await contract.ownerOf(i).catch(err => {
+            // no op
+        });
+        if (owner.toString().toLowerCase() === address) {
+            let uri = await contract.tokenURI(i)
+            console.log(uri);
+            await axios.get(uri, config).then(response => {
+                let data = response.data;
+                let color = data.color;
+                if (color) {
+                    console.log(color)
+                    if (color === "red") {
+                        red++;
+                    } else if (color === "blue") {
+                        blue++;
+                    } else if (color === "yellow") {
+                        yellow++;
+                    }
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+    }
+
+    return new Promise((resolve, reject) => {
+        resolve({
+            "red" : red,
+            "yellow" : yellow,
+            "blue" : blue,
+            "total": red+yellow+blue
+        });
+    });
+};
+
 const getNumBurned = async (toAddress, fromAddress, contractAddress) => {
     console.log(`Getting amount of ${contractAddress} burned for ${toAddress}`);
-    return axios.get(`https://api-ropsten.etherscan.io/api?module=account&action=tokennfttx&address=${toAddress}&startblock=0&endblock=999999999&sort=asc&apikey=${API_KEY}`).then(response => {
+    let network = ETHER_NETWORK === 'mainnet' ? '' : `-${ETHER_NETWORK}`;
+
+    return axios.get(`https://api${network}.etherscan.io/api?module=account&action=tokennfttx&address=${toAddress}&startblock=0&endblock=999999999&sort=asc&apikey=${API_KEY}`).then(response => {
         let responseData = response.data;
         let burns = responseData.result;
+        console.log(burns);
         let numBurns = 0;
         burns.forEach(burn => {
             if (burn.contractAddress === og1Address ) {
@@ -121,7 +174,7 @@ const getNumBurned = async (toAddress, fromAddress, contractAddress) => {
 };
 
 const getNumHeld = async(contractAddress, contractAbi, walletAddress) => {
-        let provider = new ethers.providers.EtherscanProvider("ropsten", API_KEY);
+        let provider = new ethers.providers.EtherscanProvider(ETHER_NETWORK, API_KEY);
         const contract = new ethers.Contract(contractAddress, contractAbi, provider);
 
         return await contract.balanceOf(walletAddress).then(data => {
@@ -162,7 +215,7 @@ const pinDataToPinata = async (nftJson) => {
 };
 
 const mintToken = async (toAddress, tokenUri) => {
-    let provider = new ethers.providers.EtherscanProvider("ropsten", API_KEY);
+    let provider = new ethers.providers.EtherscanProvider(ETHER_NETWORK, API_KEY);
     const wallet = new ethers.Wallet(WALLET_KEY, provider);
 
     const nonce = await wallet.getTransactionCount()
@@ -209,6 +262,7 @@ app.post("/token", async (req, res) => {
 app.post("/inquiry", async (req, res) => {
 
     const body = req.body
+    console.log(body);
     const toAddress = body.toAddress.toLowerCase()
     const fromAddress = body.fromAddress.toLowerCase()
     const contractAddress = body.contractAddress.toLowerCase()
@@ -219,6 +273,19 @@ app.post("/inquiry", async (req, res) => {
         res.status(200).json(numBurned);
     } else {
         res.status(500).json({message: "Could not get information for token"})
+    }
+});
+
+app.post("/capsules", async (req, res) => {
+    const body = req.body
+    console.log(body);
+    const address = body.address.toLowerCase()
+    let response = await getNumCapsulesAndTypes(address);
+    console.log(response);
+    if (response) {
+        res.status(200).json(response);
+    } else {
+        res.status(500);
     }
 });
 
@@ -241,9 +308,9 @@ app.post("/mintBurn", async (req, res) => {
     const quantity = body.quantity;
 
     // Check if wallet can mint:
-    //  Amount burned 1:1 Genesis and 1:2 OG
-    //  Amount already held
-    //  Held + Burned must be less than the requested quantity.
+    // Amount burned 1:1 Genesis and 1:2 OG
+    // Amount already held
+    // Held + Burned must be less than the requested quantity.
     let genesisBurned = await getNumBurned(toAddress, fromAddress, legacyAddress.toLowerCase());
     let og1Burned = await getNumBurned(toAddress, fromAddress, og1Address.toLowerCase());
     let og2Burned = await getNumBurned(toAddress, fromAddress, og2Address.toLowerCase());
@@ -252,26 +319,39 @@ app.post("/mintBurn", async (req, res) => {
 
     console.log(`${allowedCapsules} allowed, ${quantity} requested`)
     if (quantity > allowedCapsules) {
-        res.status(500).json(`Could not mint: not enough burned tokens to generate ${quantity} capsules.  ${allowedCapsules} allowed`);
+        res.status(500).json({
+            message : `Could not mint: not enough burned tokens to generate ${quantity} capsules.  ${allowedCapsules} allowed`
+        });
         return;
     }
     console.log(`Can mint ${quantity}`);
 
     // mint them
+    hashes = [];
     for (let i=0; i<quantity; i++) {
 
         const nftJson = await getRandomCapsuleColor();
-        //check
+
         const tokenUri = await pinDataToPinata(nftJson);
-        //check
-        const tokenResult = await mintToken(toAddress, tokenUri);
+        if (!tokenUri) {
+            continue;
+        }
 
-        console.log(tokenResult);
+        const tokenResult = await mintToken(fromAddress, tokenUri);
+        if (!tokenResult) {
+            continue;
+        }
 
+        let network = ETHER_NETWORK === 'mainnet' ? '' : ETHER_NETWORK;
+        let url = `https://${network}.etherscan.io/tx/${tokenResult}`
+
+        hashes.push(url);
     }
 
+    res.status(200).json({
+        txHashes : hashes
+    })
+
 });
-
-
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
