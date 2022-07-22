@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import blue from './img/blue.png';
+import logo from './img/logo.png';
 import yellow from './img/yellow.png';
 import red from './img/red.png';
 import metamask from './img/metamask.png';
@@ -70,21 +71,15 @@ const style = {
 // TODO : Update OG collection description
 // TODO : Disable burn buttons when nothing is selected
 // TODO : make images more visible when they are being loaded
-// TODO : mint response modal
-// TODO : Add fetch to get the amount of red / yellow / blue capsules held in the wallet
-// TODO : Aggregate mint results and report failures back to UI
 // TODO : Transaction to mint must be signed by owner
 // TODO : update favicon
-// TODO : loading state for capsules tab
 
 // TEST TODO
-// TODO: Create more tokens for testing for everyone's wallet
 // TODO: point to rareshoe.club
-// TODO: verify all images work on the web
-
 
 // OPS TODO
 // TODO: deploy contracts
+// TODO: verify the 25 quantity per contract id and token id
 // TODO: get abi / bytecode for old Genesis and OG contracts, set token ids
 
 class App extends React.Component {
@@ -481,8 +476,8 @@ class App extends React.Component {
                 <AppBar position="static" style={{backgroundColor: "#25253d"}}>
                     <Toolbar>
                         <Typography variant="h6" component="div">
-                            <ColorButton id="home" onClick={this.setView}><IceSkatingIcon
-                                style={{paddingRight: "5px"}}/>Rare Shoe Machine</ColorButton>
+                            <ColorButton id="home" onClick={this.setView}>
+                                <img src={logo} style={{width: "25px", height: "25px", paddingRight: "10px"}}/>Rare Shoe Machine</ColorButton>
                         </Typography>
                         <Typography variant="h6" component="div" style={{paddingLeft: "20px", paddingRight: "20px"}}>
                             <ColorButton id="burn" variant="text" style={{color: "#fefefe", fontSize: "14px"}}
