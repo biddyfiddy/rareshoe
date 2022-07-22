@@ -88,7 +88,7 @@ const getAllowedCapsules = async (toAddress, fromAddress) => {
     let genesisBurned = await getNumBurned(toAddress, fromAddress, legacyAddress.toLowerCase());
     let og1Burned = await getNumBurned(toAddress, fromAddress, og1Address.toLowerCase());
     let og2Burned = await getNumBurned(toAddress, fromAddress, og2Address.toLowerCase());
-    let numCapsulesHeld = await getNumHeld(capsulesAddress, capsulesAbi, toAddress);
+    let numCapsulesHeld = await getNumHeld(capsulesAddress, capsulesAbi, fromAddress);
     return new Promise((resolve, reject) => {
         resolve(genesisBurned.numBurns + (og1Burned.numBurns * 2) + (og2Burned.numBurns * 2) - numCapsulesHeld);
     });
@@ -307,7 +307,7 @@ app.post("/mintBurn", async (req, res) => {
     let genesisBurned = await getNumBurned(toAddress, fromAddress, legacyAddress.toLowerCase());
     let og1Burned = await getNumBurned(toAddress, fromAddress, og1Address.toLowerCase());
     let og2Burned = await getNumBurned(toAddress, fromAddress, og2Address.toLowerCase());
-    let numCapsulesHeld = await getNumHeld(capsulesAddress, capsulesAbi, toAddress);
+    let numCapsulesHeld = await getNumHeld(capsulesAddress, capsulesAbi, fromAddress);
     let allowedCapsules = genesisBurned.numBurns + (og1Burned.numBurns * 2) + (og2Burned.numBurns * 2) - numCapsulesHeld;
 
     console.log(`${allowedCapsules} allowed, ${quantity} requested`)
