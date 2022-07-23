@@ -20,6 +20,7 @@ const capsulesBytecode = capsulesJson.bytecode;
 const redJson = require('./src/capsules/red.json');
 const blueJson = require('./src/capsules/blue.json');
 const yellowJson = require('./src/capsules/yellow.json');
+const {address: capsuleAddress} = require("./src/abi/capsules.json");
 
 
 const og2Address = require('./src/abi/og1.json').address.toLowerCase();
@@ -29,7 +30,7 @@ const PINATA_API_KEY = process.env.PINATA_API_KEY;
 const PINATA_SECRET_KEY = process.env.PINATA_SECRET_KEY;
 const WALLET_KEY = process.env.WALLET_KEY;
 const ETHER_NETWORK = process.env.ETHER_NETWORK;
-
+//	slimeball.mypinata.cloud
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -91,6 +92,8 @@ const getAllowedCapsules = async (toAddress, fromAddress) => {
     let numCapsulesHeld = await getNumHeld(capsulesAddress, capsulesAbi, fromAddress);
     return new Promise((resolve, reject) => {
         resolve(genesisBurned.numBurns + (og1Burned.numBurns * 2) + (og2Burned.numBurns * 2) - numCapsulesHeld);
+    }).catch(err => {
+        console.log(err);
     });
 }
 
@@ -176,7 +179,9 @@ const getNumHeld = async (contractAddress, contractAbi, walletAddress) => {
 
     return await contract.balanceOf(walletAddress).then(data => {
         return data.toString();
-    })
+    }).catch(err => {
+        console.log(err);
+    });
 }
 
 const getRandomCapsuleColor = () => {
@@ -201,10 +206,23 @@ const getRandomCapsuleColor = () => {
 
 const pinDataToPinata = async (nftJson) => {
     console.log("Pinning data to pinata")
-    let tokenUri;
-    return axios.post("https://api.pinata.cloud/pinning/pinJSONToIPFS", JSON.stringify(nftJson), config).then(response => {
+    const pinataPayload = {
+        "pinataOptions": {
+        "cidVersion": 1
+    },
+        "pinataMetadata": {
+        "name": Date.now().toString()
+    },
+        "pinataContent": JSON.stringify(nftJson)
+    }
+
+
+    return axios.post("https://api.pinata.cloud/pinning/pinJSONToIPFS", pinataPayload, config).then(response => {
         if (response && response.data && response.data.IpfsHash) {
+            console.log(`Transaction hashed to ipfs at ${response.data.IpfsHash}`)
             return response.data.IpfsHash;
+        } else {
+            console.log('Transaction could not be hashed')
         }
     }).catch(error => {
         console.log(error);
@@ -216,9 +234,17 @@ const mintToken = async (toAddress, tokenUri) => {
     const wallet = new ethers.Wallet(WALLET_KEY, provider);
 
     const nonce = await wallet.getTransactionCount()
+    if (!nonce) {
+        return [];
+    }
     const gasFeePromise = await provider.getFeeData();
+    if (!gasFeePromise) {
+        return [];
+    }
     const gasFee = gasFeePromise.gasPrice;
-
+    if (!gasFee) {
+        return [];
+    }
     const contractInstance = new ethers.Contract(capsulesAddress, capsulesAbi, provider)
 
     let rawTxn = await contractInstance.populateTransaction.burnMint(toAddress, tokenUri, {
@@ -227,20 +253,35 @@ const mintToken = async (toAddress, tokenUri) => {
     })
 
     console.log("Submitting transaction with gas price of:", ethers.utils.formatUnits(gasFee, "gwei") + " wei");
-    let signedTxn = await wallet.sendTransaction(rawTxn)
+    let signedTxn = await wallet.sendTransaction(rawTxn).catch(err => {
+        console.log(err);
+    });
     return signedTxn.wait().then(reciept => {
-
         if (reciept) {
             return signedTxn.hash;
         } else {
             console.log("Error submitting transaction")
         }
+    }).catch(err => {
+        console.log(err);
     });
 };
 
 app.post("/token", async (req, res) => {
     const body = req.body
+    if (!body) {
+        res.status(500).json({
+            message: "No post body"
+        })
+        return;
+    }
     const uri = body.uri;
+    if (!uri) {
+        res.status(500).json({
+            message: "No URI in post body"
+        })
+        return;
+    }
 
     await axios.get(uri).then(response => {
         return res.status(200).json(response.data)
@@ -256,11 +297,23 @@ app.post("/token", async (req, res) => {
 });
 
 app.post("/inquiry", async (req, res) => {
-
     const body = req.body
+    if (!body) {
+        res.status(500).json({
+            message: "No post body"
+        })
+        return;
+    }
+
     const toAddress = body.toAddress.toLowerCase()
     const fromAddress = body.fromAddress.toLowerCase()
     const contractAddress = body.contractAddress.toLowerCase()
+    if (!fromAddress || !toAddress || !contractAddress) {
+        res.status(500).json({
+            message: "Malformed post body"
+        })
+        return;
+    }
 
     let numBurned = await getNumBurned(toAddress, fromAddress, contractAddress);
 
@@ -273,7 +326,21 @@ app.post("/inquiry", async (req, res) => {
 
 app.post("/capsules", async (req, res) => {
     const body = req.body
+    if (!body) {
+        res.status(500).json({
+            message: "No post body"
+        })
+        return;
+    }
+
     const address = body.address.toLowerCase()
+    if (!address) {
+        res.status(500).json({
+            message: "No address supplied"
+        })
+        return;
+    }
+
     let response = await getNumCapsulesAndTypes(address);
     if (response) {
         res.status(200).json(response);
@@ -284,8 +351,21 @@ app.post("/capsules", async (req, res) => {
 
 app.post("/allowed", async (req, res) => {
     const body = req.body
+    if (!body) {
+        res.status(500).json({
+            message: "No post body"
+        })
+        return;
+    }
+
     const toAddress = body.toAddress.toLowerCase()
     const fromAddress = body.fromAddress.toLowerCase()
+    if (!toAddress || !fromAddress) {
+        res.status(500).json({
+            message: "Malformed post body"
+        })
+        return;
+    }
     const allowed = await getAllowedCapsules(toAddress, fromAddress);
     if (allowed) {
         res.status(200).json({allowed});
@@ -296,18 +376,62 @@ app.post("/allowed", async (req, res) => {
 
 app.post("/mintBurn", async (req, res) => {
     const body = req.body
-    const toAddress = body.toAddress.toLowerCase()
-    const fromAddress = body.fromAddress.toLowerCase()
-    const quantity = body.quantity;
+    if (!body) {
+        res.status(500).json({
+            message: "No post body"
+        })
+        return;
+    }
+
+    let message = body.message;
+    if (!message || !message.toAddress || !message.fromAddress || !message.quantity) {
+        return res.status(500).json("Request was malformed")
+    }
+
+    let signature = body.signature
+    let address
+
+    try {
+        address = ethers.utils.verifyMessage(JSON.stringify(message), signature)
+    } catch(err){
+        return res.status(401).json("Could not verify signature.  Are you being a bad boy?")
+    }
+
+    if (address.toLowerCase() !== message.fromAddress.toLowerCase()) {
+        return res.status(401).json("Could not verify signature.  Are you being a bad boy?")
+    }
+
+    const toAddress = message.toAddress.toLowerCase()
+    const fromAddress = message.fromAddress.toLowerCase()
+    const quantity = message.quantity;
+    if (!toAddress || !fromAddress || !quantity) {
+        res.status(500).json({
+            message: "Malformed post body"
+        })
+        return;
+    }
 
     // Check if wallet can mint:
     // Amount burned 1:1 Genesis and 1:2 OG
     // Amount already held
     // Held + Burned must be less than the requested quantity.
     let genesisBurned = await getNumBurned(toAddress, fromAddress, legacyAddress.toLowerCase());
+    if (!genesisBurned) {
+        res.status(500).json({ message: "Could not get number of Genesis tokens burned"});
+    }
     let og1Burned = await getNumBurned(toAddress, fromAddress, og1Address.toLowerCase());
+    if (!og1Burned) {
+        res.status(500).json({ message: "Could not get number of OG tokens burned"});
+    }
     let og2Burned = await getNumBurned(toAddress, fromAddress, og2Address.toLowerCase());
+    if (!og2Burned) {
+        res.status(500).json({ message: "Could not get number of Genesis tokens burned"});
+    }
     let numCapsulesHeld = await getNumHeld(capsulesAddress, capsulesAbi, fromAddress);
+    if (!numCapsulesHeld) {
+        res.status(500).json({ message: "Could not get number of Capsules held"});
+    }
+
     let allowedCapsules = genesisBurned.numBurns + (og1Burned.numBurns * 2) + (og2Burned.numBurns * 2) - numCapsulesHeld;
 
     console.log(`${allowedCapsules} allowed, ${quantity} requested`)
@@ -330,7 +454,7 @@ app.post("/mintBurn", async (req, res) => {
             continue;
         }
 
-        const tokenResult = await mintToken(toAddress, tokenUri);
+        const tokenResult = await mintToken(fromAddress, tokenUri);
         if (!tokenResult) {
             continue;
         }
@@ -344,7 +468,6 @@ app.post("/mintBurn", async (req, res) => {
     res.status(200).json({
         txHashes: hashes
     })
-
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

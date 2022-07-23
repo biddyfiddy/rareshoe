@@ -18,7 +18,6 @@ import animation from './img/animation.mp4';
 import "@fontsource/montserrat";
 import {ethers} from "ethers"
 import Box from '@mui/material/Box';
-import IceSkatingIcon from '@mui/icons-material/IceSkating';
 import {styled} from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -65,14 +64,7 @@ const style = {
 
 };
 
-// TODO : Fix modal number of tokens burned dialog
-// TODO : Validate post inputs
-// TODO : Add checks to all express items that could fail
-// TODO : Update OG collection description
-// TODO : Disable burn buttons when nothing is selected
 // TODO : make images more visible when they are being loaded
-// TODO : Transaction to mint must be signed by owner
-// TODO : update favicon
 
 // TEST TODO
 // TODO: point to rareshoe.club
@@ -98,6 +90,7 @@ class App extends React.Component {
             amountGenesisBurned: 0,
             allowedCapsules: 0,
             amountOgBurned: 0,
+            amountBurned: 0,
             redCapsules: 0,
             blueCapsules: 0,
             yellowCapsules: 0,
@@ -119,6 +112,17 @@ class App extends React.Component {
         this.setView = this.setView.bind(this);
         this.decrementMintQuantity = this.decrementMintQuantity.bind(this);
         this.incrementMintQuantity = this.incrementMintQuantity.bind(this);
+        this.openOGCollection = this.openOGCollection.bind(this);
+        this.openGenesisCollection = this.openGenesisCollection.bind(this);
+    }
+
+    openGenesisCollection() {
+        window.open("https://opensea.io/collection/rareshoe", '_blank', 'noopener,noreferrer');
+    }
+
+    openOGCollection() {
+        window.open("https://opensea.io/collection/rareshoe-joshong", '_blank', 'noopener,noreferrer');
+        window.open("https://rarible.com/rareshoe/created", '_blank', 'noopener,noreferrer');
     }
 
     decrementMintQuantity() {
@@ -327,13 +331,24 @@ class App extends React.Component {
     }
 
     async mint() {
+        let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+        const signer = ethersProvider.getSigner()
+
+        const {mintQuantity} = this.state;
+        const {accounts} = this.state;
+
+        let message = {
+            toAddress: capsuleAddress,
+            fromAddress: accounts[0],
+            quantity: mintQuantity
+        }
+
+        let signature = await signer.signMessage(JSON.stringify(message));
+
         this.setState({
             mintModalOpen: true,
             minting: true
         })
-
-        const {mintQuantity} = this.state;
-        const {accounts} = this.state;
 
         const requestOptions = {
             method: 'POST',
@@ -341,10 +356,8 @@ class App extends React.Component {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                toAddress: capsuleAddress,
-                fromAddress: accounts[0],
-                quantity: mintQuantity
-
+                message: message,
+                signature: signature
             })
         };
 
@@ -412,6 +425,11 @@ class App extends React.Component {
         let activeTokens = ogTokenUris.filter(token => {
             return token.imageActive
         })
+
+        if (activeTokens.length === 0) {
+            return;
+        }
+
         let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
         let signer = ethersProvider.getSigner()
         let legacyContract = new ethers.ContractFactory(
@@ -427,6 +445,11 @@ class App extends React.Component {
         let activeTokens = genesisTokenUris.filter(token => {
             return token.imageActive
         })
+
+        if (activeTokens.length === 0) {
+            return;
+        }
+
         let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
         let signer = ethersProvider.getSigner()
         let legacyContract = new ethers.ContractFactory(
@@ -448,6 +471,9 @@ class App extends React.Component {
 
         Promise.all(promises).then(() => {
             this.handleOpen();
+            this.setState({
+               amountBurned: promises.length
+            });
         }).catch(err => {
             console.log(err);
         })
@@ -462,33 +488,36 @@ class App extends React.Component {
 
     render() {
 
-        const {redCapsules,blueCapsules, yellowCapsules, totalCapsules, mintError, mintTransactions, minting, mintQuantity, mintModalOpen, burnModalOpen, allowedCapsules, accounts, genesisTokenUris, view, amountGenesisBurned, amountOgBurned, gettingBurned, ogTokenUris} = this.state;
+        const {amountBurned, redCapsules,blueCapsules, yellowCapsules, totalCapsules, mintError, mintTransactions, minting, mintQuantity, mintModalOpen, burnModalOpen, allowedCapsules, accounts, genesisTokenUris, view, amountGenesisBurned, amountOgBurned, gettingBurned, ogTokenUris} = this.state;
         const ColorButton = styled(Button)(({theme}) => ({
-            color: "#fefefe",
-            backgroundColor: "#25253d",
+            color: "lightgrey",
+            backgroundColor: "#54585a",
             '&:hover': {
-                backgroundColor: "rgb(76 76 126)",
+                backgroundColor: "#7b8387",
             },
+            ":disabled": {
+                color: 'lightgrey'
+            }
         }));
 
         return (
             <div style={{backgroundColor: "black", color: "lightgray", lineHeight: "1.8", letterSpacing: "1px"}}>
-                <AppBar position="static" style={{backgroundColor: "#25253d"}}>
+                <AppBar position="static" style={{backgroundColor: "#54585a"}}>
                     <Toolbar>
                         <Typography variant="h6" component="div">
                             <ColorButton id="home" onClick={this.setView}>
                                 <img src={logo} style={{width: "25px", height: "25px", paddingRight: "10px"}}/>Rare Shoe Machine</ColorButton>
                         </Typography>
                         <Typography variant="h6" component="div" style={{paddingLeft: "20px", paddingRight: "20px"}}>
-                            <ColorButton id="burn" variant="text" style={{color: "#fefefe", fontSize: "14px"}}
+                            <ColorButton id="burn" variant="text" style={{color: "lightgrey", fontSize: "14px"}}
                                          onClick={this.setView}>Burn</ColorButton>
                         </Typography>
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                            <ColorButton id="capsule" variant="text" style={{color: "#fefefe", fontSize: "14px"}}
+                            <ColorButton id="capsule" variant="text" style={{color: "lightgrey", fontSize: "14px"}}
                                          onClick={this.setView}>Capsules</ColorButton>
                         </Typography>
                         {accounts && accounts.length > 0 ?
-                            <Button color="inherit">{accounts[0].substring(0, 10) + "..."}</Button>
+                            <Button style={{color: "lightgrey"}}>{accounts[0].substring(0, 10) + "..."}</Button>
                             :
                             <Button color="inherit" onClick={this.connectMetamask}><img src={metamask} style={{
                                 width: "25px",
@@ -516,7 +545,7 @@ class App extends React.Component {
                         <video width="400" height="400" src={animation} type="video/mp4" autoPlay muted>
                         </video>
                         <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description" sx={{ mt: 2 }}>
-                            You have burned X tokens.  Please allow time for it to be reflected on the Etherium Main Net.
+                            You have burned {amountBurned} tokens.  Please allow time for it to be reflected on the Etherium Main Net.
                         </Typography>
                     </Box>
                 </Modal>
@@ -532,7 +561,7 @@ class App extends React.Component {
                             <Typography style={{fontFamily: 'Montserrat', display: 'inline'}} id="modal-modal-title" variant="h6" component="h2">
                                 Minting Capsules
                             </Typography>
-                            <CloseIcon style={{float: 'right'}} onClick={this.handleClose}></CloseIcon>
+                            <CloseIcon style={{float: 'right'}} onClick={this.handleMintModalClose}></CloseIcon>
                         </div>
                         {minting ?
                             <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description" sx={{ mt: 2 }}>
@@ -581,15 +610,16 @@ class App extends React.Component {
                                 sneakers.
                             </p>
                             <div style={{textAlign: "center", marginTop: "40px"}}>
-                            <ColorButton id="burn" variant="text" style={{padding: "16px", backgroundColor: "#513a79", color: "lightgrey", fontSize: "14px"}}
-                                         /*TODO onClick={this.setView}*/>Genesis Collection</ColorButton>
+                            <ColorButton id="burn" variant="text" style={{padding: "16px", fontSize: "14px"}}
+                                         onClick={this.openGenesisCollection}>Genesis Collection</ColorButton>
                             </div>
                             <hr style={{marginBottom: "40px", marginTop: "40px", width:"50%"}} color="#484848"/>
                             <h3 style={{textAlign: "center"}}>The Rare Shoe OG Collection</h3>
-                            <p>This collection consists of XXXX</p>
+                            <p>This collection was released to early supporters of the project, prior to the Genesis collection.
+                                It consists of 275 generative 3D shoes.</p>
                             <div style={{textAlign: "center", marginTop: "40px"}}>
-                                <ColorButton id="burn" variant="text" style={{padding: "16px", backgroundColor: "#513a79", color: "lightgrey", fontSize: "14px"}}
-                                    /*TODO onClick={this.setView}*/>OG Collection</ColorButton>
+                                <ColorButton id="burn" variant="text" style={{padding: "16px", fontSize: "14px"}}
+                                        onClick={this.openOGCollection}>OG Collection</ColorButton>
                             </div>
                         </div>
                     </div> : view === "burn" ?
@@ -619,7 +649,7 @@ class App extends React.Component {
                                              onClick={this.makeGenesisActive} loading="lazy"></img>) : <p>.</p>}
                                 </div>
 
-                                <ColorButton variant="contained" style={{backgroundColor: "rgb(81, 58, 121)", textAlign: "center"}}
+                                <ColorButton variant="text" style={{marginBottom: "10px", textAlign: "center"}}
                                              onClick={this.burnGenesis}>Burn</ColorButton>
                             </div>
                             <div style={{marginTop: "30px", marginBottom: "30px"}}>Click below to convert your OG tokens into Rare Shoe capsules.</div>
@@ -642,7 +672,7 @@ class App extends React.Component {
                                              onClick={this.makeOGActive} loading="lazy"></img>) : <p>.</p>}
                                 </div>
 
-                                <ColorButton variant="contained" style={{backgroundColor: "rgb(81, 58, 121)", textAlign: "center"}}
+                                <ColorButton variant="text" style={{marginBottom: "10px", textAlign: "center"}}
                                              onClick={this.burnOG}>Burn</ColorButton>
                             </div>
                                 </div>}
@@ -680,8 +710,8 @@ class App extends React.Component {
                                     <p>Select Amount of Capsules to Mint</p>
                                     <ArrowBackIosIcon onClick={this.decrementMintQuantity}/><div style={{marginLeft: "15px", marginRight: "15px", display : "inline"}}>{mintQuantity}</div><ArrowForwardIosIcon onClick={this.incrementMintQuantity}/>
                                     </div>
-                                <ColorButton variant="contained" style={{marginTop: "20px", textAlign: "center"}}
-                                             onClick={this.mint}>Mint</ColorButton>
+                                <ColorButton variant="text" style={{marginTop: "20px", textAlign: "center"}}
+                                             onClick={this.mint} disabled={mintQuantity === 0}>Mint</ColorButton>
                                 </div>
                             </div>
                             <div style={{
