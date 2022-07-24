@@ -6,6 +6,7 @@ const axios = require("axios")
 const {ethers} = require("ethers");
 
 const og1Json = require('./src/abi/og1.json');
+const og2Json = require('./src/abi/og2.json');
 const {abi: legacyAbi, legacyByteCode, address: legacyAddress} = require("./src/abi/legacy.json");
 
 const og1Address = og1Json.address.toLowerCase();
@@ -23,14 +24,14 @@ const yellowJson = require('./src/capsules/yellow.json');
 const {address: capsuleAddress} = require("./src/abi/capsules.json");
 
 
-const og2Address = require('./src/abi/og1.json').address.toLowerCase();
+const og2Address = require('./src/abi/og2.json').address.toLowerCase();
+const og2TokenIds = og2Json.tokenIds;
 
 const API_KEY = process.env.ETHER_API_KEY;
 const PINATA_API_KEY = process.env.PINATA_API_KEY;
 const PINATA_SECRET_KEY = process.env.PINATA_SECRET_KEY;
 const WALLET_KEY = process.env.WALLET_KEY;
 const ETHER_NETWORK = process.env.ETHER_NETWORK;
-//	slimeball.mypinata.cloud
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -91,7 +92,13 @@ const getAllowedCapsules = async (toAddress, fromAddress) => {
     let og2Burned = await getNumBurned(toAddress, fromAddress, og2Address.toLowerCase());
     let numCapsulesHeld = await getNumHeld(capsulesAddress, capsulesAbi, fromAddress);
     return new Promise((resolve, reject) => {
-        resolve(genesisBurned.numBurns + (og1Burned.numBurns * 2) + (og2Burned.numBurns * 2) - numCapsulesHeld);
+        resolve({
+            allowedCapsules: (genesisBurned.numBurns + (og1Burned.numBurns * 2) + (og2Burned.numBurns * 2) - numCapsulesHeld),
+            capsulesHeld: parseInt(numCapsulesHeld),
+            amountGenesisBurned: genesisBurned.numBurns,
+            amountOg1Burned: og1Burned.numBurns,
+            amountOg2Burned: og2Burned.numBurns
+        });
     }).catch(err => {
         console.log(err);
     });
@@ -105,7 +112,6 @@ const getNumCapsulesAndTypes = async (address) => {
         return;
     });
 
-
     let red = 0;
     let yellow = 0;
     let blue = 0;
@@ -116,7 +122,16 @@ const getNumCapsulesAndTypes = async (address) => {
         });
         if (owner.toString().toLowerCase() === address) {
             let uri = await contract.tokenURI(i)
-            await axios.get(uri, config).then(response => {
+            uri = uri.replace("ipfs://", "https://slimeball.mypinata.cloud/ipfs/");
+
+            await axios.get(uri, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "pinata_api_key": PINATA_API_KEY,
+                    "pinata_secret_api_key": PINATA_SECRET_KEY,
+                    "Host": "slimeball.mypinata.cloud"
+                }
+            }).then(response => {
                 let data = response.data;
                 let color = data.color;
                 if (color) {
@@ -153,6 +168,8 @@ const getNumBurned = async (toAddress, fromAddress, contractAddress) => {
         let burns = responseData.result;
         let numBurns = 0;
         burns.forEach(burn => {
+            console.log(`${burn.contractAddress} === ${og1Address}`)
+            console.log(`${burn.contractAddress} === ${og2Address}`)
             if (burn.contractAddress === og1Address) {
                 if (og1TokenIds.includes(burn.tokenID) && burn.from === fromAddress && burn.to === toAddress && contractAddress === burn.contractAddress) {
                     numBurns++;
@@ -213,7 +230,7 @@ const pinDataToPinata = async (nftJson) => {
         "pinataMetadata": {
         "name": Date.now().toString()
     },
-        "pinataContent": JSON.stringify(nftJson)
+        "pinataContent": nftJson
     }
 
 
@@ -296,34 +313,6 @@ app.post("/token", async (req, res) => {
     )
 });
 
-app.post("/inquiry", async (req, res) => {
-    const body = req.body
-    if (!body) {
-        res.status(500).json({
-            message: "No post body"
-        })
-        return;
-    }
-
-    const toAddress = body.toAddress.toLowerCase()
-    const fromAddress = body.fromAddress.toLowerCase()
-    const contractAddress = body.contractAddress.toLowerCase()
-    if (!fromAddress || !toAddress || !contractAddress) {
-        res.status(500).json({
-            message: "Malformed post body"
-        })
-        return;
-    }
-
-    let numBurned = await getNumBurned(toAddress, fromAddress, contractAddress);
-
-    if (numBurned) {
-        res.status(200).json(numBurned);
-    } else {
-        res.status(500).json({message: "Could not get information for token"})
-    }
-});
-
 app.post("/capsules", async (req, res) => {
     const body = req.body
     if (!body) {
@@ -368,7 +357,7 @@ app.post("/allowed", async (req, res) => {
     }
     const allowed = await getAllowedCapsules(toAddress, fromAddress);
     if (allowed) {
-        res.status(200).json({allowed});
+        res.status(200).json(allowed);
     } else {
         res.status(200).json({allowed: 0});
     }
@@ -454,7 +443,7 @@ app.post("/mintBurn", async (req, res) => {
             continue;
         }
 
-        const tokenResult = await mintToken(fromAddress, tokenUri);
+        const tokenResult = await mintToken(fromAddress, `ipfs://${tokenUri}`);
         if (!tokenResult) {
             continue;
         }
@@ -463,6 +452,8 @@ app.post("/mintBurn", async (req, res) => {
         let url = `https://${network}.etherscan.io/tx/${tokenResult}`
 
         hashes.push(url);
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
     res.status(200).json({

@@ -27,11 +27,15 @@ import {
     bytecode as legacyByteCode,
 } from './abi/legacy.json';
 import {
-    address as ogAddress,
-    abi as ogAbi,
-    bytecode as ogByteCode,
+    address as og1Address,
+    abi as og1Abi,
+    bytecode as og1ByteCode,
 } from './abi/og1.json';
-
+import {
+    address as og2Address,
+    abi as og2Abi,
+    bytecode as og2ByteCode,
+} from './abi/og2.json';
 import {
     address as capsuleAddress
 } from './abi/capsules.json';
@@ -43,7 +47,7 @@ const inactiveImageStyle = {
 }
 
 const activeImageStyle = {
-    border: "5px solid #25253d",
+    border: "5px solid #54585a",
     display: "inline",
     width: "100px", height: "100px"
 }
@@ -64,12 +68,7 @@ const style = {
 
 };
 
-// TODO : make images more visible when they are being loaded
-
-// TEST TODO
 // TODO: point to rareshoe.club
-
-// OPS TODO
 // TODO: deploy contracts
 // TODO: verify the 25 quantity per contract id and token id
 // TODO: get abi / bytecode for old Genesis and OG contracts, set token ids
@@ -88,6 +87,7 @@ class App extends React.Component {
             genesisTokenUris: [],
             ogTokenUris: [],
             amountGenesisBurned: 0,
+            numCapsulesHeld: 0,
             allowedCapsules: 0,
             amountOgBurned: 0,
             amountBurned: 0,
@@ -96,6 +96,7 @@ class App extends React.Component {
             yellowCapsules: 0,
             totalCapsules: 0,
             gettingBurned: false,
+            gettingCapsules: false,
             minting: false,
             view: "home"
         }
@@ -174,24 +175,6 @@ class App extends React.Component {
 
             this.setState({
                 accounts: accounts,
-                gettingBurned: true
-            })
-
-            let genesisUris = await this.getGenesisRareShoeBalance();
-            let amountGenesisBurned = await this.getBurnedTokenAmount(legacyAddress);
-            let ogTokenUris = await this.getOgRareShoeBalance();
-            let amountOgBurned = await this.getBurnedTokenAmount(ogAddress);
-            let allowedCapsules = await this.getAllowedCapsules(ogAddress);
-
-            await this.getOwnedCapsules();
-
-            this.setState({
-                allowedCapsules,
-                genesisTokenUris: genesisUris,
-                ogTokenUris: ogTokenUris,
-                amountGenesisBurned: amountGenesisBurned,
-                amountOgBurned: amountOgBurned,
-                gettingBurned: false
             })
         }
     }
@@ -248,22 +231,29 @@ class App extends React.Component {
     async getOgRareShoeBalance() {
         let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
         let signer = ethersProvider.getSigner()
-        let legacyContract = new ethers.ContractFactory(
-            ogAbi,
-            ogByteCode,
+        let og1Contract = new ethers.ContractFactory(
+            og1Abi,
+            og1ByteCode,
             signer,
         );
-        return this.getBalance(ogAddress, legacyContract, signer);
+        let og2Contract = new ethers.ContractFactory(
+            og2Abi,
+            og2ByteCode,
+            signer,
+        );
+        let og1Tokens = await this.getBalance(og1Address, og1Contract, signer);
+        let og2Tokens = await this.getBalance(og2Address, og2Contract, signer);
+        return og1Tokens.concat(og2Tokens);
     }
 
-    async getBalance(legacyAddress, legacyContract, signer) {
+    async getBalance(contractAddress, contractFactory, signer) {
         const {accounts} = this.state;
 
         if (!accounts || accounts.length === 0) {
             return [];
         }
 
-        let contract = legacyContract.attach(legacyAddress)
+        let contract = contractFactory.attach(contractAddress)
 
         let total = await contract.totalSupply().catch(err => {
             return;
@@ -294,12 +284,14 @@ class App extends React.Component {
                 })
                 if (response) {
                     let json = await response.json();
-
-                    let imageUrl = json.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+                    let hash = json.image.substring(json.image.lastIndexOf("/") + 1);
+                    let imageUrl = `https://slimeball.mypinata.cloud/ipfs/${hash}`
 
                     tokenUris.push({
                         tokenId: i,
+                        hash: hash,
                         imageUrl: imageUrl,
+                        contractAddress: contractAddress,
                         imageActive: false
                     });
                 }
@@ -309,10 +301,10 @@ class App extends React.Component {
     }
 
     makeOGActive(e) {
-        const uri = parseInt(e.target.id);
+        const uri = e.target.id;
         const {ogTokenUris} = this.state;
         ogTokenUris.forEach(tokenUri => {
-            if (tokenUri.tokenId === uri) {
+            if (tokenUri.hash === uri) {
                 tokenUri.imageActive = !tokenUri.imageActive;
             }
         })
@@ -320,10 +312,10 @@ class App extends React.Component {
     }
 
     makeGenesisActive(e) {
-        const uri = parseInt(e.target.id);
+        const uri = e.target.id;
         const {genesisTokenUris} = this.state;
         genesisTokenUris.forEach(tokenUri => {
-            if (tokenUri.tokenId === uri) {
+            if (tokenUri.hash === uri) {
                 tokenUri.imageActive = !tokenUri.imageActive;
             }
         })
@@ -396,28 +388,7 @@ class App extends React.Component {
 
         let response = await fetch("/allowed", requestOptions)
         let json = await response.json();
-        return json.allowed;
-    }
-
-
-    async getBurnedTokenAmount(legacyAddress) {
-        const {accounts} = this.state;
-
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                toAddress: capsuleAddress,
-                fromAddress: accounts[0],
-                contractAddress: legacyAddress
-            })
-        };
-
-        let response = await fetch("/inquiry", requestOptions)
-        let json = await response.json();
-        return json.numBurns;
+        return json;
     }
 
     async burnOG() {
@@ -432,12 +403,37 @@ class App extends React.Component {
 
         let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
         let signer = ethersProvider.getSigner()
-        let legacyContract = new ethers.ContractFactory(
-            ogAbi,
-            ogByteCode,
+        let og1Contract = new ethers.ContractFactory(
+            og1Abi,
+            og1ByteCode,
             signer,
         );
-        await this.burnActiveTokens(activeTokens, legacyContract, ogAddress);
+        let og2Contract = new ethers.ContractFactory(
+            og2Abi,
+            og2ByteCode,
+            signer,
+        );
+
+        const {accounts } = this.state;
+
+        let promises = activeTokens.map(async token => {
+            let contract;
+            if (token.contractAddress === og1Address) {
+                contract = og1Contract.attach(token.contractAddress);
+            } else {
+                contract = og2Contract.attach(token.contractAddress);
+            }
+            return await contract["safeTransferFrom(address,address,uint256)"](accounts[0], capsuleAddress, token.tokenId);
+        })
+
+        Promise.all(promises).then(() => {
+            this.handleOpen();
+            this.setState({
+                amountBurned: promises.length
+            });
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     async burnGenesis() {
@@ -457,10 +453,7 @@ class App extends React.Component {
             legacyByteCode,
             signer,
         );
-        await this.burnActiveTokens(activeTokens, legacyContract, legacyAddress);
-    }
 
-    async burnActiveTokens(activeTokens, legacyContract, legacyAddress) {
         const {accounts } = this.state;
 
         let contract = legacyContract.attach(legacyAddress)
@@ -479,16 +472,48 @@ class App extends React.Component {
         })
     }
 
-    setView(e) {
+    async setView(e) {
         let view = e.target.id;
         this.setState({
             view
         })
+
+        if (view === "burn") {
+            this.setState({
+                gettingBurned: true
+            })
+
+            let genesisUris = await this.getGenesisRareShoeBalance();
+
+            let ogTokenUris = await this.getOgRareShoeBalance();
+
+            this.setState({
+                genesisTokenUris: genesisUris,
+                ogTokenUris: ogTokenUris,
+                gettingBurned: false
+            })
+        } else if (view === "capsule") {
+            this.setState({
+                gettingCapsules: true
+            })
+
+            let response = await this.getAllowedCapsules();
+
+            await this.getOwnedCapsules();
+
+            this.setState({
+                allowedCapsules: response.allowedCapsules,
+                amountGenesisBurned: response.amountGenesisBurned,
+                amountOgBurned: (response.amountOg1Burned + response.amountOg2Burned),
+                numCapsulesHeld: response.capsulesHeld,
+                gettingCapsules: false
+            })
+        }
     }
 
     render() {
 
-        const {amountBurned, redCapsules,blueCapsules, yellowCapsules, totalCapsules, mintError, mintTransactions, minting, mintQuantity, mintModalOpen, burnModalOpen, allowedCapsules, accounts, genesisTokenUris, view, amountGenesisBurned, amountOgBurned, gettingBurned, ogTokenUris} = this.state;
+        const {numCapsulesHeld, gettingCapsules, amountBurned, redCapsules,blueCapsules, yellowCapsules, totalCapsules, mintError, mintTransactions, minting, mintQuantity, mintModalOpen, burnModalOpen, allowedCapsules, accounts, genesisTokenUris, view, amountGenesisBurned, amountOgBurned, gettingBurned, ogTokenUris} = this.state;
         const ColorButton = styled(Button)(({theme}) => ({
             color: "lightgrey",
             backgroundColor: "#54585a",
@@ -510,11 +535,11 @@ class App extends React.Component {
                         </Typography>
                         <Typography variant="h6" component="div" style={{paddingLeft: "20px", paddingRight: "20px"}}>
                             <ColorButton id="burn" variant="text" style={{color: "lightgrey", fontSize: "14px"}}
-                                         onClick={this.setView}>Burn</ColorButton>
+                                         onClick={this.setView} disabled={!(accounts && accounts.length > 0)}>Burn</ColorButton>
                         </Typography>
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                             <ColorButton id="capsule" variant="text" style={{color: "lightgrey", fontSize: "14px"}}
-                                         onClick={this.setView}>Capsules</ColorButton>
+                                         onClick={this.setView} disabled={!(accounts && accounts.length > 0)}>Capsules</ColorButton>
                         </Typography>
                         {accounts && accounts.length > 0 ?
                             <Button style={{color: "lightgrey"}}>{accounts[0].substring(0, 10) + "..."}</Button>
@@ -644,7 +669,7 @@ class App extends React.Component {
                                 <div style={{marginBottom: "10px"}}>You have {genesisTokenUris.length} Genesis Rare Shoe(s).</div>
                                 <div>
                                     {genesisTokenUris ? genesisTokenUris.map(tokenUri =>
-                                        <img id={tokenUri.tokenId} src={tokenUri.imageUrl}
+                                        <img id={tokenUri.hash} src={tokenUri.imageUrl}
                                              style={tokenUri.imageActive ? activeImageStyle : inactiveImageStyle}
                                              onClick={this.makeGenesisActive} loading="lazy"></img>) : <p>.</p>}
                                 </div>
@@ -667,7 +692,7 @@ class App extends React.Component {
                                 <div style={{marginBottom: "10px"}}>You have {ogTokenUris.length} OG Rare Shoe(s).</div>
                                 <div>
                                     {ogTokenUris ? ogTokenUris.map(tokenUri =>
-                                        <img id={tokenUri.tokenId} src={tokenUri.imageUrl}
+                                        <img id={tokenUri.hash} src={tokenUri.imageUrl}
                                              style={tokenUri.imageActive ? activeImageStyle : inactiveImageStyle}
                                              onClick={this.makeOGActive} loading="lazy"></img>) : <p>.</p>}
                                 </div>
@@ -681,13 +706,13 @@ class App extends React.Component {
 
                             <h2 style={{marginTop: "50px", marginBottom: "10px"}}>Mint Capsules</h2>
 
-                            {gettingBurned ?
+                            {gettingCapsules ?
                                 <CircularProgress style={{marginTop: "20px"}} color="inherit"/> : <div>
                             <div style={{marginTop: "50px", marginBottom: "10px"}}>
                                 You have burned {amountGenesisBurned} Genesis Token(s) and {amountOgBurned} OG Token(s).
                             </div>
                             <div style={{marginBottom: "10px"}}>
-                                You have minted {totalCapsules} capsule(s).
+                                You have minted {numCapsulesHeld} capsule(s).
                             </div>
                             <div style={{marginBottom: "30px"}}>
                                 You can mint up to {allowedCapsules} capsule(s).
