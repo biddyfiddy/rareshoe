@@ -284,11 +284,8 @@ class App extends React.Component {
             if (contract.tokenURI) {
                 uri = await contract.tokenURI(tokenId);
             } else if (contract.uri) {
-                console.log(tokenId);
                 uri = await contract["uri(uint256)"](tokenId);
             }
-
-            console.log(uri);
 
             const requestOptions = {
                 method: 'POST',
@@ -364,10 +361,39 @@ class App extends React.Component {
     }
 
     async mint() {
-        const {accounts, mintQuantity} = this.state
+        this.setState({
+            mintModalOpen: true,
+            minting: true
+        })
 
-        let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+        const {accounts, mintQuantity} = this.state
+        const ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
         const signer = ethersProvider.getSigner();
+
+        let message = {
+            toAddress: capsuleAddress,
+            fromAddress: accounts[0],
+            quantity: mintQuantity
+        }
+
+        let signature = await signer.signMessage(JSON.stringify(message));
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: message,
+                signature: signature
+            })
+        };
+
+        let response = await fetch("/mintBurn", requestOptions)
+        let hashes = await response.json();
+        if (!hashes) {
+            return;
+        }
 
         let rshoePcontractFactory = new ethers.ContractFactory(
             capsuleAbi,
@@ -377,7 +403,7 @@ class App extends React.Component {
 
         let contractInstance = rshoePcontractFactory.attach(capsuleAddress)
 
-        for (let i=0; i<mintQuantity; i++) {
+       let promises = hashes.txHashes.map(async hash => {
 
             const nonce = await signer.getTransactionCount()
             if (!nonce) {
@@ -392,7 +418,7 @@ class App extends React.Component {
                 return [];
             }
 
-            let rawTxn = await contractInstance.populateTransaction.burnMint(accounts[0], "xxxxx", {
+            let rawTxn = await contractInstance.populateTransaction.burnMint(accounts[0], hash, {
                 gasPrice: gasFee,
                 nonce: nonce
             })
@@ -403,200 +429,22 @@ class App extends React.Component {
             });
             return signedTxn.wait().then(reciept => {
                 if (reciept) {
-                    return signedTxn.hash;
+                    return 'https://etherscan.io/tx/' + signedTxn.hash;
                 } else {
                     console.log("Error submitting transaction")
                 }
             }).catch(err => {
                 console.log(err);
             });
-
-        }
-
-        /*
-        const {accounts, mintQuanitity} = this.state;
-        const ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-        const signer = ethersProvider.getSigner();
-        const capsulesContract = new ethers.ContractFactory(
-            capsuleAbi,
-            capsuleByteCode,
-            signer,
-        );
-
-        let contract = capsulesContract.attach(accounts[0]);
-
-        for (let i=0; i<mintQuanitity; i++) {
-
-
-            const nonce = await wallet.getTransactionCount()
-            if (!nonce) {
-                return [];
-            }
-            const gasFeePromise = await ethersProvider.getFeeData();
-            if (!gasFeePromise) {
-                return [];
-            }
-            const gasFee = gasFeePromise.gasPrice;
-            if (!gasFee) {
-                return [];
-            }
-
-
-            let rawTxn = await capsulesContract.populateTransaction.burnMint(toAddress, tokenUri, {
-                gasPrice: gasFee,
-                nonce: nonce
-            })
-
-            console.log("Submitting transaction with gas price of:", ethers.utils.formatUnits(gasFee, "gwei") + " wei");
-            let signedTxn = await wallet.sendTransaction(rawTxn).catch(err => {
-                console.log(err);
-            });
-            return signedTxn.wait().then(reciept => {
-                if (reciept) {
-                    return signedTxn.hash;
-                } else {
-                    console.log("Error submitting transaction")
-                }
-            }).catch(err => {
-                console.log(err);
-            });
-
-        }
-*/
-
-
-   /*     let provider = new ethers.providers.EtherscanProvider(ETHER_NETWORK, API_KEY);
-
-
-
-
-        const wallet = new ethers.Wallet(WALLET_KEY, provider);
-
-        const nonce = await wallet.getTransactionCount()
-        if (!nonce) {
-            return [];
-        }
-        const gasFeePromise = await provider.getFeeData();
-        if (!gasFeePromise) {
-            return [];
-        }
-        const gasFee = gasFeePromise.gasPrice;
-        if (!gasFee) {
-            return [];
-        }
-        const contractInstance = new ethers.Contract(capsulesAddress, capsulesAbi, provider)
-
-        let rawTxn = await contractInstance.populateTransaction.burnMint(toAddress, tokenUri, {
-            gasPrice: gasFee,
-            nonce: nonce
-        })
-
-        console.log("Submitting transaction with gas price of:", ethers.utils.formatUnits(gasFee, "gwei") + " wei");
-        let signedTxn = await wallet.sendTransaction(rawTxn).catch(err => {
-            console.log(err);
-        });
-        return signedTxn.wait().then(reciept => {
-            if (reciept) {
-                return signedTxn.hash;
-            } else {
-                console.log("Error submitting transaction")
-            }
-        }).catch(err => {
-            console.log(err);
         });
 
-
-
-        let activeTokens = ogTokenUris.filter(token => {
-            return token.imageActive
-        })
-
-        if (activeTokens.length === 0) {
-            return;
-        }
-
-        let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-        let signer = ethersProvider.getSigner()
-        let og1Contract = new ethers.ContractFactory(
-            og1Abi,
-            og1ByteCode,
-            signer,
-        );
-        let og2Contract = new ethers.ContractFactory(
-            og2Abi,
-            og2ByteCode,
-            signer,
-        );
-
-        const {accounts } = this.state;
-
-        let promises = activeTokens.map(async token => {
-            let contract;
-            if (token.contractAddress === og1Address) {
-                contract = og1Contract.attach(token.contractAddress);
-            } else {
-                contract = og2Contract.attach(token.contractAddress);
-            }
-            return await contract["safeTransferFrom(address,address,uint256,uint256,bytes)"](accounts[0], capsuleAddress, token.tokenId, 1, "0x00");
-        })
-
-        Promise.all(promises).then(() => {
-            this.handleOpen();
-            this.setState({
-                amountBurned: promises.length
-            });
-        }).catch(err => {
+        let transactions = await Promise.all(promises).catch(err => {
             console.log(err);
-        })*/
-
-
-/*        let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-        const signer = ethersProvider.getSigner()
-
-        const {mintQuantity} = this.state;
-        const {accounts} = this.state;
-
-        let message = {
-            toAddress: capsuleAddress,
-            fromAddress: accounts[0],
-            quantity: mintQuantity
-        }
-
-        let signature = await signer.signMessage(JSON.stringify(message));
-
+        })
         this.setState({
-            mintModalOpen: true,
-            minting: true
+            mintTransactions : transactions,
+            minting: false
         })
-
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                message: message,
-                signature: signature
-            })
-        };
-
-        let response = await fetch("/mintBurn", requestOptions)
-        await response.json().then(result => {
-            // Likely an error
-            if (result.message) {
-                this.setState({
-                    mintError: result.message
-                })
-            } else if (result.txHashes) {
-                this.setState({
-                    mintTransactions : result.txHashes
-                })
-            }
-
-            this.setState({
-                minting: false
-            })
-        });*/
     }
 
     async getAllowedCapsules() {

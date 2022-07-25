@@ -49,13 +49,26 @@ const getAllowedCapsules = async (toAddress, fromAddress) => {
     let og1Burned = await getNumOgBurned(toAddress, fromAddress, og1Address.toLowerCase());
     let og2Burned = await getNumOgBurned(toAddress, fromAddress, og2Address.toLowerCase());
     let numCapsulesHeld = await getNumHeld(capsulesAddress, capsulesAbi, fromAddress);
+
+    let numGenesisBurned = 0;
+    if (genesisBurned) {
+        numGenesisBurned = genesisBurned.numBurns;
+    }
+    let numOg1Burned = 0;
+    if (og1Burned) {
+        numOg1Burned = og1Burned.numBurns;
+    }
+    let numOg2Burned = 0;
+    if (og2Burned) {
+        numOg2Burned = og2Burned.numBurns;
+    }
     return new Promise((resolve, reject) => {
         resolve({
-            allowedCapsules: (genesisBurned.numBurns + (og1Burned.numBurns * 2) + (og2Burned.numBurns * 2) - numCapsulesHeld),
+            allowedCapsules: (numGenesisBurned + (numOg1Burned * 2) + (numOg2Burned * 2) - numCapsulesHeld),
             capsulesHeld: parseInt(numCapsulesHeld),
-            amountGenesisBurned: genesisBurned.numBurns,
-            amountOg1Burned: og1Burned.numBurns,
-            amountOg2Burned: og2Burned.numBurns
+            amountGenesisBurned: numGenesisBurned,
+            amountOg1Burned: numOg1Burned,
+            amountOg2Burned: numOg2Burned
         });
     }).catch(err => {
         console.log(err);
@@ -126,8 +139,6 @@ const getNumOgBurned = async (toAddress, fromAddress, contractAddress) => {
         let burns = responseData.result;
         let numBurns = 0;
         burns.forEach(burn => {
-            console.log(`${burn.contractAddress} === ${og1Address}`)
-            console.log(`${burn.contractAddress} === ${og2Address}`)
             if (burn.contractAddress === og1Address) {
                 if (og1TokenIds.includes(burn.tokenID) && burn.from === fromAddress && burn.to === toAddress && contractAddress === burn.contractAddress) {
                     numBurns++;
@@ -157,8 +168,6 @@ const getNumBurned = async (toAddress, fromAddress, contractAddress) => {
         let burns = responseData.result;
         let numBurns = 0;
         burns.forEach(burn => {
-            console.log(`${burn.contractAddress} === ${og1Address}`)
-            console.log(`${burn.contractAddress} === ${og2Address}`)
             if (burn.contractAddress === og1Address) {
                 if (og1TokenIds.includes(burn.tokenID) && burn.from === fromAddress && burn.to === toAddress && contractAddress === burn.contractAddress) {
                     numBurns++;
@@ -221,14 +230,12 @@ const getOwnedTokens = async (contractAddress, address) => {
         }
         tokens.forEach(token => {
             if (token.to === address) {
-                console.log(token)
                 tokenId.push(token.tokenID);
             }
         })
 
         tokens.forEach(token => {
             if (token.from === address) {
-                console.log(token)
                 tokenId.splice(tokenId.indexOf(token.tokenID), 1);
             }
         })
@@ -295,44 +302,6 @@ const pinDataToPinata = async (nftJson) => {
     })
 };
 
-const mintToken = async (toAddress, tokenUri) => {
-    let provider = new ethers.providers.EtherscanProvider(ETHER_NETWORK, API_KEY);
-    const wallet = new ethers.Wallet(WALLET_KEY, provider);
-
-    const nonce = await wallet.getTransactionCount()
-    if (!nonce) {
-        return [];
-    }
-    const gasFeePromise = await provider.getFeeData();
-    if (!gasFeePromise) {
-        return [];
-    }
-    const gasFee = gasFeePromise.gasPrice;
-    if (!gasFee) {
-        return [];
-    }
-    const contractInstance = new ethers.Contract(capsulesAddress, capsulesAbi, provider)
-
-    let rawTxn = await contractInstance.populateTransaction.burnMint(toAddress, tokenUri, {
-        gasPrice: gasFee,
-        nonce: nonce
-    })
-
-    console.log("Submitting transaction with gas price of:", ethers.utils.formatUnits(gasFee, "gwei") + " wei");
-    let signedTxn = await wallet.sendTransaction(rawTxn).catch(err => {
-        console.log(err);
-    });
-    return signedTxn.wait().then(reciept => {
-        if (reciept) {
-            return signedTxn.hash;
-        } else {
-            console.log("Error submitting transaction")
-        }
-    }).catch(err => {
-        console.log(err);
-    });
-};
-
 app.post("/tokens", async (req, res) => {
     const body = req.body
     if (!body) {
@@ -386,13 +355,13 @@ app.post("/token", async (req, res) => {
         return;
     }
 
-    console.log(uri)
-
     let uriFixed;
     if (uri.indexOf("ipfs://ipfs/") > -1) {
         uriFixed = uri.replace("ipfs://ipfs/", "https://slimeball.mypinata.cloud/ipfs/");
-    } else if (uri.indexOf("ipfs://")) {
+    } else if (uri.indexOf("ipfs://") > -1) {
         uriFixed = uri.replace("ipfs://", "https://slimeball.mypinata.cloud/ipfs/");
+    } else {
+        uriFixed = uri
     }
 
     await axios.get(uriFixed).then(response => {
@@ -506,23 +475,24 @@ app.post("/mintBurn", async (req, res) => {
     // Amount already held
     // Held + Burned must be less than the requested quantity.
     let genesisBurned = await getNumBurned(toAddress, fromAddress, legacyAddress.toLowerCase());
-    if (!genesisBurned) {
-        res.status(500).json({ message: "Could not get number of Genesis tokens burned"});
-    }
     let og1Burned = await getNumOgBurned(toAddress, fromAddress, og1Address.toLowerCase());
-    if (!og1Burned) {
-        res.status(500).json({ message: "Could not get number of OG tokens burned"});
-    }
     let og2Burned = await getNumOgBurned(toAddress, fromAddress, og2Address.toLowerCase());
-    if (!og2Burned) {
-        res.status(500).json({ message: "Could not get number of Genesis tokens burned"});
-    }
     let numCapsulesHeld = await getNumHeld(capsulesAddress, capsulesAbi, fromAddress);
-    if (!numCapsulesHeld) {
-        res.status(500).json({ message: "Could not get number of Capsules held"});
+
+    let numGenesisBurned = 0;
+    if (genesisBurned) {
+        numGenesisBurned = genesisBurned.numBurns;
+    }
+    let numOg1Burned = 0;
+    if (og1Burned) {
+        numOg1Burned = og1Burned.numBurns;
+    }
+    let numOg2Burned = 0;
+    if (og2Burned) {
+        numOg2Burned = og2Burned.numBurns;
     }
 
-    let allowedCapsules = genesisBurned.numBurns + (og1Burned.numBurns * 2) + (og2Burned.numBurns * 2) - numCapsulesHeld;
+    let allowedCapsules = numGenesisBurned + (numOg1Burned * 2) + (numOg2Burned * 2) - numCapsulesHeld;
 
     console.log(`${allowedCapsules} allowed, ${quantity} requested`)
     if (quantity > allowedCapsules) {
@@ -544,15 +514,7 @@ app.post("/mintBurn", async (req, res) => {
             continue;
         }
 
-        const tokenResult = await mintToken(fromAddress, `ipfs://${tokenUri}`);
-        if (!tokenResult) {
-            continue;
-        }
-
-        let network = ETHER_NETWORK === 'mainnet' ? '' : ETHER_NETWORK;
-        let url = `https://${network}.etherscan.io/tx/${tokenResult}`
-
-        hashes.push(url);
+        hashes.push(`ipfs://${tokenUri}`);
 
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
