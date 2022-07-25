@@ -421,7 +421,13 @@ class App extends React.Component {
 
 
 
-            let rawTxn = await contractInstance.populateTransaction.burnMint(accounts[0], hash);
+            let rawTxn = await contractInstance.populateTransaction.burnMint(accounts[0], hash).catch(err => {
+                console.log(err);
+            });
+
+            if (!rawTxn) {
+                console.log("did not work")
+            }
             /*, {
                 gasPrice: gasFee,
                 nonce: nonce
