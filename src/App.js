@@ -37,7 +37,9 @@ import {
     bytecode as og2ByteCode,
 } from './abi/og2.json';
 import {
-    address as capsuleAddress
+    address as capsuleAddress,
+    abi as capsuleAbi,
+    bytecode as capsuleByteCode
 } from './abi/capsules.json';
 
 const inactiveImageStyle = {
@@ -273,14 +275,17 @@ class App extends React.Component {
         }
 
         let tokens = await response.json();
+        if (!tokens || !Array.isArray(tokens)) {
+            return [];
+        }
         let contract = contractFactory.attach(contractAddress);
         let tokenPromises = tokens.map(async tokenId => {
-            console.log(contract.tokenURI);
             let uri;
             if (contract.tokenURI) {
                 uri = await contract.tokenURI(tokenId);
             } else if (contract.uri) {
-                uri = await contract.uri(tokenId);
+                console.log(tokenId);
+                uri = await contract["uri(uint256)"](tokenId);
             }
 
             console.log(uri);
@@ -359,7 +364,193 @@ class App extends React.Component {
     }
 
     async mint() {
+        const {accounts, mintQuantity} = this.state
+
         let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+        const signer = ethersProvider.getSigner();
+
+        let rshoePcontractFactory = new ethers.ContractFactory(
+            capsuleAbi,
+            capsuleByteCode,
+            signer,
+        );
+
+        let contractInstance = rshoePcontractFactory.attach(capsuleAddress)
+
+        for (let i=0; i<mintQuantity; i++) {
+
+            const nonce = await signer.getTransactionCount()
+            if (!nonce) {
+                return [];
+            }
+            const gasFeePromise = await ethersProvider.getFeeData();
+            if (!gasFeePromise) {
+                return [];
+            }
+            const gasFee = gasFeePromise.gasPrice;
+            if (!gasFee) {
+                return [];
+            }
+
+            let rawTxn = await contractInstance.populateTransaction.burnMint(accounts[0], "xxxxx", {
+                gasPrice: gasFee,
+                nonce: nonce
+            })
+
+            console.log("Submitting transaction with gas price of:", ethers.utils.formatUnits(gasFee, "gwei") + " wei");
+            let signedTxn = await signer.sendTransaction(rawTxn).catch(err => {
+                console.log(err);
+            });
+            return signedTxn.wait().then(reciept => {
+                if (reciept) {
+                    return signedTxn.hash;
+                } else {
+                    console.log("Error submitting transaction")
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+
+        }
+
+        /*
+        const {accounts, mintQuanitity} = this.state;
+        const ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+        const signer = ethersProvider.getSigner();
+        const capsulesContract = new ethers.ContractFactory(
+            capsuleAbi,
+            capsuleByteCode,
+            signer,
+        );
+
+        let contract = capsulesContract.attach(accounts[0]);
+
+        for (let i=0; i<mintQuanitity; i++) {
+
+
+            const nonce = await wallet.getTransactionCount()
+            if (!nonce) {
+                return [];
+            }
+            const gasFeePromise = await ethersProvider.getFeeData();
+            if (!gasFeePromise) {
+                return [];
+            }
+            const gasFee = gasFeePromise.gasPrice;
+            if (!gasFee) {
+                return [];
+            }
+
+
+            let rawTxn = await capsulesContract.populateTransaction.burnMint(toAddress, tokenUri, {
+                gasPrice: gasFee,
+                nonce: nonce
+            })
+
+            console.log("Submitting transaction with gas price of:", ethers.utils.formatUnits(gasFee, "gwei") + " wei");
+            let signedTxn = await wallet.sendTransaction(rawTxn).catch(err => {
+                console.log(err);
+            });
+            return signedTxn.wait().then(reciept => {
+                if (reciept) {
+                    return signedTxn.hash;
+                } else {
+                    console.log("Error submitting transaction")
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+
+        }
+*/
+
+
+   /*     let provider = new ethers.providers.EtherscanProvider(ETHER_NETWORK, API_KEY);
+
+
+
+
+        const wallet = new ethers.Wallet(WALLET_KEY, provider);
+
+        const nonce = await wallet.getTransactionCount()
+        if (!nonce) {
+            return [];
+        }
+        const gasFeePromise = await provider.getFeeData();
+        if (!gasFeePromise) {
+            return [];
+        }
+        const gasFee = gasFeePromise.gasPrice;
+        if (!gasFee) {
+            return [];
+        }
+        const contractInstance = new ethers.Contract(capsulesAddress, capsulesAbi, provider)
+
+        let rawTxn = await contractInstance.populateTransaction.burnMint(toAddress, tokenUri, {
+            gasPrice: gasFee,
+            nonce: nonce
+        })
+
+        console.log("Submitting transaction with gas price of:", ethers.utils.formatUnits(gasFee, "gwei") + " wei");
+        let signedTxn = await wallet.sendTransaction(rawTxn).catch(err => {
+            console.log(err);
+        });
+        return signedTxn.wait().then(reciept => {
+            if (reciept) {
+                return signedTxn.hash;
+            } else {
+                console.log("Error submitting transaction")
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+
+
+
+        let activeTokens = ogTokenUris.filter(token => {
+            return token.imageActive
+        })
+
+        if (activeTokens.length === 0) {
+            return;
+        }
+
+        let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+        let signer = ethersProvider.getSigner()
+        let og1Contract = new ethers.ContractFactory(
+            og1Abi,
+            og1ByteCode,
+            signer,
+        );
+        let og2Contract = new ethers.ContractFactory(
+            og2Abi,
+            og2ByteCode,
+            signer,
+        );
+
+        const {accounts } = this.state;
+
+        let promises = activeTokens.map(async token => {
+            let contract;
+            if (token.contractAddress === og1Address) {
+                contract = og1Contract.attach(token.contractAddress);
+            } else {
+                contract = og2Contract.attach(token.contractAddress);
+            }
+            return await contract["safeTransferFrom(address,address,uint256,uint256,bytes)"](accounts[0], capsuleAddress, token.tokenId, 1, "0x00");
+        })
+
+        Promise.all(promises).then(() => {
+            this.handleOpen();
+            this.setState({
+                amountBurned: promises.length
+            });
+        }).catch(err => {
+            console.log(err);
+        })*/
+
+
+/*        let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
         const signer = ethersProvider.getSigner()
 
         const {mintQuantity} = this.state;
@@ -405,7 +596,7 @@ class App extends React.Component {
             this.setState({
                 minting: false
             })
-        });
+        });*/
     }
 
     async getAllowedCapsules() {

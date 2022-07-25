@@ -46,8 +46,8 @@ const config = {
 
 const getAllowedCapsules = async (toAddress, fromAddress) => {
     let genesisBurned = await getNumBurned(toAddress, fromAddress, legacyAddress.toLowerCase());
-    let og1Burned = await getNumBurned(toAddress, fromAddress, og1Address.toLowerCase());
-    let og2Burned = await getNumBurned(toAddress, fromAddress, og2Address.toLowerCase());
+    let og1Burned = await getNumOgBurned(toAddress, fromAddress, og1Address.toLowerCase());
+    let og2Burned = await getNumOgBurned(toAddress, fromAddress, og2Address.toLowerCase());
     let numCapsulesHeld = await getNumHeld(capsulesAddress, capsulesAbi, fromAddress);
     return new Promise((resolve, reject) => {
         resolve({
@@ -116,6 +116,37 @@ const getNumCapsulesAndTypes = async (address) => {
         });
     });
 };
+
+const getNumOgBurned = async (toAddress, fromAddress, contractAddress) => {
+    console.log(`Getting amount of ${contractAddress} burned for ${toAddress}`);
+    let network = ETHER_NETWORK === 'mainnet' ? '' : `-${ETHER_NETWORK}`;
+
+    return axios.get(`https://api${network}.etherscan.io/api?module=account&action=token1155tx&address=${toAddress}&startblock=0&endblock=999999999&sort=asc&apikey=${API_KEY}`).then(response => {
+        let responseData = response.data;
+        let burns = responseData.result;
+        let numBurns = 0;
+        burns.forEach(burn => {
+            console.log(`${burn.contractAddress} === ${og1Address}`)
+            console.log(`${burn.contractAddress} === ${og2Address}`)
+            if (burn.contractAddress === og1Address) {
+                if (og1TokenIds.includes(burn.tokenID) && burn.from === fromAddress && burn.to === toAddress && contractAddress === burn.contractAddress) {
+                    numBurns++;
+                }
+            } else if (burn.contractAddress === og2Address) {
+                if (og2TokenIds.includes(burn.tokenID) && burn.from === fromAddress && burn.to === toAddress && contractAddress === burn.contractAddress) {
+                    numBurns++;
+                }
+            } else if (burn.from === fromAddress && burn.to === toAddress && contractAddress === burn.contractAddress) {
+                numBurns++;
+            }
+        })
+        return {
+            numBurns: numBurns
+        };
+    }).catch(err => {
+        console.log(err);
+    });
+}
 
 const getNumBurned = async (toAddress, fromAddress, contractAddress) => {
     console.log(`Getting amount of ${contractAddress} burned for ${toAddress}`);
@@ -423,7 +454,13 @@ app.post("/allowed", async (req, res) => {
     if (allowed) {
         res.status(200).json(allowed);
     } else {
-        res.status(200).json({allowed: 0});
+        res.status(200).json({
+            allowedCapsules: 0,
+            amountGenesisBurned: 0,
+            amountOg1Burned: 0,
+            amountOg2Burned: 0,
+            capsulesHeld: 0,
+        });
     }
 });
 
@@ -472,11 +509,11 @@ app.post("/mintBurn", async (req, res) => {
     if (!genesisBurned) {
         res.status(500).json({ message: "Could not get number of Genesis tokens burned"});
     }
-    let og1Burned = await getNumBurned(toAddress, fromAddress, og1Address.toLowerCase());
+    let og1Burned = await getNumOgBurned(toAddress, fromAddress, og1Address.toLowerCase());
     if (!og1Burned) {
         res.status(500).json({ message: "Could not get number of OG tokens burned"});
     }
-    let og2Burned = await getNumBurned(toAddress, fromAddress, og2Address.toLowerCase());
+    let og2Burned = await getNumOgBurned(toAddress, fromAddress, og2Address.toLowerCase());
     if (!og2Burned) {
         res.status(500).json({ message: "Could not get number of Genesis tokens burned"});
     }
