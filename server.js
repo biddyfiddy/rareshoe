@@ -155,11 +155,10 @@ const getOwnedOgTokens = async (contractAddress, address) => {
         let responseData = response.data;
         let tokens = responseData.result;
 
-        console.log(tokens)
-
-        // if token.to === address add to list
-        // if token.from === address remove from list
         let tokenId = [];
+        if (!tokens) {
+            return tokenId;
+        }
         tokens.forEach(token => {
             if (token.to === address) {
                 tokenId.push(token.tokenID);
@@ -186,11 +185,10 @@ const getOwnedTokens = async (contractAddress, address) => {
         let responseData = response.data;
         let tokens = responseData.result;
 
-        console.log(tokens)
-
-        // if token.to === address add to list
-        // if token.from === address remove from list
         let tokenId = [];
+        if (!tokens) {
+            return tokenId;
+        }
         tokens.forEach(token => {
             if (token.to === address) {
                 tokenId.push(token.tokenID);
