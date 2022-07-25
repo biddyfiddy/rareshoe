@@ -148,15 +148,63 @@ const getNumBurned = async (toAddress, fromAddress, contractAddress) => {
     });
 };
 
+const getOwnedOgTokens = async (contractAddress, address) => {
+    let network = ETHER_NETWORK === 'mainnet' ? '' : `-${ETHER_NETWORK}`;
+
+    return axios.get(`https://api${network}.etherscan.io/api?module=account&action=token1155tx&contractaddress=${contractAddress}&address=${address}&page=1&offset=100&startblock=0&endblock=27025780&sort=asc&apikey=${API_KEY}`).then(response => {
+        let responseData = response.data;
+        let tokens = responseData.result;
+
+        console.log(tokens)
+
+        // if token.to === address add to list
+        // if token.from === address remove from list
+        let tokenId = [];
+        tokens.forEach(token => {
+            if (token.to === address) {
+                tokenId.push(token.tokenID);
+            }
+        })
+
+        tokens.forEach(token => {
+            if (token.to === address) {
+                tokenId.push(token.tokenID);
+                tokenId.splice(tokenId.indexOf(token.tokenID), 1);
+            }
+        })
+
+        return tokenId;
+    }).catch(err => {
+        console.log(err);
+    });
+};
+
 const getOwnedTokens = async (contractAddress, address) => {
     let network = ETHER_NETWORK === 'mainnet' ? '' : `-${ETHER_NETWORK}`;
 
     return axios.get(`https://api${network}.etherscan.io/api?module=account&action=tokennfttx&contractaddress=${contractAddress}&address=${address}&page=1&offset=100&startblock=0&endblock=27025780&sort=asc&apikey=${API_KEY}`).then(response => {
         let responseData = response.data;
         let tokens = responseData.result;
-        return tokens.map(token => {
-            return token.tokenID;
-        });
+
+        console.log(tokens)
+
+        // if token.to === address add to list
+        // if token.from === address remove from list
+        let tokenId = [];
+        tokens.forEach(token => {
+            if (token.to === address) {
+                tokenId.push(token.tokenID);
+            }
+        })
+
+        tokens.forEach(token => {
+            if (token.to === address) {
+                tokenId.push(token.tokenID);
+                tokenId.splice(tokenId.indexOf(token.tokenID), 1);
+            }
+        })
+
+        return tokenId;
     }).catch(err => {
         console.log(err);
     });
@@ -280,7 +328,12 @@ app.post("/tokens", async (req, res) => {
         return;
     }
 
-    let tokens = await getOwnedTokens(contractAddress, address);
+    let tokens;
+    if (contractAddress === legacyAddress) {
+        tokens = await getOwnedTokens(contractAddress, address);
+    } else {
+        tokens = await getOwnedOgTokens(contractAddress, address);
+    }
     if (tokens) {
         res.status(200).json(tokens)
     } else {
@@ -304,7 +357,8 @@ app.post("/token", async (req, res) => {
         return;
     }
 
-    await axios.get(uri).then(response => {
+    const uriFixed = uri.replace("ipfs://", "https://slimeball.mypinata.cloud/ipfs/");
+    await axios.get(uriFixed).then(response => {
         return res.status(200).json(response.data)
     }).catch(
         function (error) {
