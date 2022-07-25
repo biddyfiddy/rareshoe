@@ -276,7 +276,7 @@ class App extends React.Component {
         let contract = contractFactory.attach(contractAddress)
 
 
-        return tokens.map(async tokenId => {
+        let tokenPromises = tokens.map(async tokenId => {
             let uri = await contract.tokenURI(tokenId)
             const requestOptions = {
                 method: 'POST',
@@ -317,6 +317,8 @@ class App extends React.Component {
                 }
             }
         });
+
+        return Promise.all(tokenPromises);
     }
 
     makeOGActive(e) {
