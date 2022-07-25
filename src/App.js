@@ -427,7 +427,7 @@ class App extends React.Component {
                 nonce: nonce
             })*/
 
-            console.log("Submitting transaction with gas price of:", ethers.utils.formatUnits(gasFee, "gwei") + " wei");
+            //console.log("Submitting transaction with gas price of:", ethers.utils.formatUnits(gasFee, "gwei") + " wei");
             let signedTxn = await signer.sendTransaction(rawTxn).catch(err => {
                 console.log(err);
             });
