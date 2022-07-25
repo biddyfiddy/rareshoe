@@ -307,9 +307,9 @@ class App extends React.Component {
                 if (json.image) {
                     let imageIpfs = json.image;
                     if (imageIpfs.endsWith("image.jpg") || imageIpfs.endsWith("image.jpeg")) {
-                        let stripImage = imageIpfs.substring(0, imageIpfs.lastIndexOf("/"));
-                        hash =  stripImage.substring(stripImage.lastIndexOf("/") + 1);
-                        imageUrl = `https://slimeball.mypinata.cloud/ipfs/${hash}` + imageIpfs.substring(imageIpfs.lastIndexOf("/"));
+                        let urlSuffix = imageIpfs.replace("ipfs://", "")
+                        hash =  imageIpfs.replace("ipfs://ipfs/", "").replace("/image.jpeg", "");
+                        imageUrl = `https://slimeball.mypinata.cloud/${urlSuffix}`;
                     } else {
                         hash = imageIpfs.substring(imageIpfs.lastIndexOf("/") + 1);
                         imageUrl = `https://slimeball.mypinata.cloud/ipfs/${hash}`
