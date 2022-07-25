@@ -275,7 +275,16 @@ class App extends React.Component {
         let tokens = await response.json();
         let contract = contractFactory.attach(contractAddress);
         let tokenPromises = tokens.map(async tokenId => {
-            let uri = await contract.tokenURI(tokenId)
+            console.log(contract.tokenURI);
+            let uri;
+            if (contract.tokenURI) {
+                uri = await contract.tokenURI(tokenId);
+            } else if (contract.uri) {
+                uri = await contract.uri(tokenId);
+            }
+
+            console.log(uri);
+
             const requestOptions = {
                 method: 'POST',
                 headers: {
@@ -294,8 +303,16 @@ class App extends React.Component {
                 let hash;
                 let imageUrl;
                 if (json.image) {
-                    hash = json.image.substring(json.image.lastIndexOf("/") + 1);
-                    imageUrl = `https://slimeball.mypinata.cloud/ipfs/${hash}`
+                    let imageIpfs = json.image;
+                    if (imageIpfs.endsWith("image.jpg") || imageIpfs.endsWith("image.jpeg")) {
+                        let stripImage = imageIpfs.substring(0, imageIpfs.lastIndexOf("/"));
+                        hash =  stripImage.substring(stripImage.lastIndexOf("/") + 1);
+                        imageUrl = `https://slimeball.mypinata.cloud/ipfs/${hash}` + imageIpfs.substring(imageIpfs.lastIndexOf("/"));
+                    } else {
+                        hash = imageIpfs.substring(imageIpfs.lastIndexOf("/") + 1);
+                        imageUrl = `https://slimeball.mypinata.cloud/ipfs/${hash}`
+                    }
+
                     // OpenSea Contract that doesn't use image url attribute : lh3.googleusercontent
                 } else if (json.content) {
                     json.content.forEach(attribute => {
@@ -443,7 +460,7 @@ class App extends React.Component {
             } else {
                 contract = og2Contract.attach(token.contractAddress);
             }
-            return await contract["safeTransferFrom(address,address,uint256, uint256, bytes memory)"](accounts[0], capsuleAddress, token.tokenId, 1, "0x00");
+            return await contract["safeTransferFrom(address,address,uint256,uint256,bytes)"](accounts[0], capsuleAddress, token.tokenId, 1, "0x00");
         })
 
         Promise.all(promises).then(() => {

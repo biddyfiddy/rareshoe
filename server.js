@@ -355,7 +355,15 @@ app.post("/token", async (req, res) => {
         return;
     }
 
-    const uriFixed = uri.replace("ipfs://", "https://slimeball.mypinata.cloud/ipfs/");
+    console.log(uri)
+
+    let uriFixed;
+    if (uri.indexOf("ipfs://ipfs/") > -1) {
+        uriFixed = uri.replace("ipfs://ipfs/", "https://slimeball.mypinata.cloud/ipfs/");
+    } else if (uri.indexOf("ipfs://")) {
+        uriFixed = uri.replace("ipfs://", "https://slimeball.mypinata.cloud/ipfs/");
+    }
+
     await axios.get(uriFixed).then(response => {
         return res.status(200).json(response.data)
     }).catch(
