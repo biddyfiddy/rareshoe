@@ -265,7 +265,7 @@ class App extends React.Component {
         };
 
         let response = await fetch("/tokens", requestOptions).catch(err => {
-            console.log(err);
+            return [];
         })
 
         if (!response) {
@@ -273,9 +273,7 @@ class App extends React.Component {
         }
 
         let tokens = await response.json();
-        let contract = contractFactory.attach(contractAddress)
-
-
+        let contract = contractFactory.attach(contractAddress);
         let tokenPromises = tokens.map(async tokenId => {
             let uri = await contract.tokenURI(tokenId)
             const requestOptions = {
