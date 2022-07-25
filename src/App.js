@@ -784,7 +784,7 @@ class App extends React.Component {
                                 </div>
 
                                 <ColorButton variant="text" style={{marginBottom: "10px", textAlign: "center"}}
-                                             onClick={this.burnOG}>Burn</ColorButton>
+                                             onClick={this.burnOG} disabled>Burn</ColorButton>
                             </div>
                                 </div>}
                         </div> :

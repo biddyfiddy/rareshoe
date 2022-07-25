@@ -201,13 +201,22 @@ const getOwnedOgTokens = async (contractAddress, address) => {
         }
         tokens.forEach(token => {
             if (token.to === address) {
+                if (token.contractAddress === og1Address && og1TokenIds.includes(token.tokenID)) {
+                    tokenId.push(token.tokenID);
+                } else if (token.contractAddress === og2Address && og2TokenIds.includes(token.tokenID)) {
                 tokenId.push(token.tokenID);
+                }
             }
         })
 
         tokens.forEach(token => {
             if (token.from === address) {
-                tokenId.splice(tokenId.indexOf(token.tokenID), 1);
+                if (token.contractAddress === og1Address && og1TokenIds.includes(token.tokenID)) {
+                    tokenId.splice(tokenId.indexOf(token.tokenID), 1);
+                } else if (token.contractAddress === og2Address && og2TokenIds.includes(token.tokenID)) {
+                    tokenId.splice(tokenId.indexOf(token.tokenID), 1);
+                }
+
             }
         })
 
