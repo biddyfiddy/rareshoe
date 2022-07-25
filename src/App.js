@@ -314,7 +314,6 @@ class App extends React.Component {
                         hash = imageIpfs.substring(imageIpfs.lastIndexOf("/") + 1);
                         imageUrl = `https://slimeball.mypinata.cloud/ipfs/${hash}`
                     }
-
                     // OpenSea Contract that doesn't use image url attribute : lh3.googleusercontent
                 } else if (json.content) {
                     json.content.forEach(attribute => {
@@ -409,19 +408,24 @@ class App extends React.Component {
             if (!nonce) {
                 return [];
             }
-            const gasFeePromise = await ethersProvider.getFeeData();
+
+
+            /*const gasFeePromise = await ethersProvider.getFeeData();
             if (!gasFeePromise) {
                 return [];
             }
             const gasFee = gasFeePromise.gasPrice;
             if (!gasFee) {
                 return [];
-            }
+            }*/
 
-            let rawTxn = await contractInstance.populateTransaction.burnMint(accounts[0], hash, {
+
+
+            let rawTxn = await contractInstance.populateTransaction.burnMint(accounts[0], hash);
+            /*, {
                 gasPrice: gasFee,
                 nonce: nonce
-            })
+            })*/
 
             console.log("Submitting transaction with gas price of:", ethers.utils.formatUnits(gasFee, "gwei") + " wei");
             let signedTxn = await signer.sendTransaction(rawTxn).catch(err => {
