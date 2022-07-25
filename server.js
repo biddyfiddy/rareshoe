@@ -35,48 +35,6 @@ const ETHER_NETWORK = process.env.ETHER_NETWORK;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'build')));
 
-
-/*
-const og1TokenIds = ["325641",
-"325698",
-    "333467",
-    "348852",
-    "348917",
-    "348924",
-    "349335",
-    "397383",
-    "435679",
-    "435684",
-    "465384",
-    "514381",
-    "517397",
-    "542091",
-    "564859",
-    "585044",
-    "636714",
-    "636718"];
-
-const og2TokenIds = [
-    "76897645978672858115504195217152888562815429950311142221661744562366169743361",
-    "76897645978672858115504195217152888562815429950311142221661744552470565093377",
-    "76897645978672858115504195217152888562815429950311142221661744564565192998913",
-    "76897645978672858115504195217152888562815429950311142221661744559067634860033",
-    "76897645978672858115504195217152888562815429950311142221661744561266658115585",
-    "76897645978672858115504195217152888562815429950311142221661744560167146487809",
-    "76897645978672858115504195217152888562815429950311142221661744563465681371137",
-    "76897645978672858115504195217152888562815429950311142221661744551371053465601",
-    "76897645978672858115504195217152888562815429950311142221661744554669588348929",
-    "76897645978672858115504195217152888562815429950311142221661744557968123232257",
-    "76897645978672858115504195217152888562815429950311142221661744555769099976705",
-    "76897645978672858115504195217152888562815429950311142221661744566764216254465",
-    "76897645978672858115504195217152888562815429950311142221661744556868611604481",
-    "76897645978672858115504195217152888562815429950311142221661744553570076721153",
-    "76897645978672858115504195217152888562815429950311142221661744565664704626689"
-];
-*/
-
-// TODO validate payloads
-
 const config = {
     headers: {
         'Content-Type': 'application/json',
@@ -190,6 +148,20 @@ const getNumBurned = async (toAddress, fromAddress, contractAddress) => {
     });
 };
 
+const getOwnedTokens = async (contractAddress, address) => {
+    let network = ETHER_NETWORK === 'mainnet' ? '' : `-${ETHER_NETWORK}`;
+
+    return axios.get(`https://api${network}.etherscan.io/api?module=account&action=tokennfttx&contractaddress=${contractAddress}&address=${address}&page=1&offset=100&startblock=0&endblock=27025780&sort=asc&apikey=${API_KEY}`).then(response => {
+        let responseData = response.data;
+        let tokens = responseData.result;
+        return tokens.map(token => {
+            return token.tokenID;
+        });
+    }).catch(err => {
+        console.log(err);
+    });
+}
+
 const getNumHeld = async (contractAddress, contractAbi, walletAddress) => {
     let provider = new ethers.providers.EtherscanProvider(ETHER_NETWORK, API_KEY);
     const contract = new ethers.Contract(contractAddress, contractAbi, provider);
@@ -283,6 +255,38 @@ const mintToken = async (toAddress, tokenUri) => {
         console.log(err);
     });
 };
+
+app.post("/tokens", async (req, res) => {
+    const body = req.body
+    if (!body) {
+        res.status(500).json({
+            message: "No post body"
+        })
+        return;
+    }
+
+    const contractAddress = body.contractAddress;
+    if (!contractAddress) {
+        res.status(500).json({
+            message: "No Contract Address in post body"
+        })
+        return;
+    }
+    const address = body.address;
+    if (!address) {
+        res.status(500).json({
+            message: "No Address in post body"
+        })
+        return;
+    }
+
+    let tokens = await getOwnedTokens(contractAddress, address);
+    if (tokens) {
+        res.status(200).json(tokens)
+    } else {
+        res.status(500).json({ message : "Could not get owned tokens"})
+    }
+});
 
 app.post("/token", async (req, res) => {
     const body = req.body

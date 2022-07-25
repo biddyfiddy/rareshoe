@@ -253,51 +253,70 @@ class App extends React.Component {
             return [];
         }
 
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                contractAddress: contractAddress,
+                address: accounts[0]
+            })
+        };
+
+        let response = await fetch("/tokens", requestOptions).catch(err => {
+            console.log(err);
+        })
+
+        if (!response) {
+            return [];
+        }
+
+        let tokens = await response.json();
         let contract = contractFactory.attach(contractAddress)
 
-        let total = await contract.totalSupply().catch(err => {
-            return;
-        });
 
-        let signerHash = await signer.getAddress();
-
-        let tokenUris = []
-        for (let i = 0; i < total; i++) {
-            let owner = await contract.ownerOf(i).catch(err => {
-                // no op
-            });
-            if (owner === signerHash) {
-                let uri = await contract.tokenURI(i)
-
-                const requestOptions = {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        uri
-                    })
-                };
-
-                let response = await fetch("/token", requestOptions).catch(err => {
-                    console.log(err);
+        return tokens.map(async tokenId => {
+            let uri = await contract.tokenURI(tokenId)
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    uri
                 })
-                if (response) {
-                    let json = await response.json();
-                    let hash = json.image.substring(json.image.lastIndexOf("/") + 1);
-                    let imageUrl = `https://slimeball.mypinata.cloud/ipfs/${hash}`
+            };
 
-                    tokenUris.push({
-                        tokenId: i,
-                        hash: hash,
-                        imageUrl: imageUrl,
-                        contractAddress: contractAddress,
-                        imageActive: false
-                    });
+            let response = await fetch("/token", requestOptions).catch(err => {
+                console.log(err);
+            })
+            if (response) {
+                let json = await response.json();
+                let hash;
+                let imageUrl;
+                if (json.image) {
+                    hash = json.image.substring(json.image.lastIndexOf("/") + 1);
+                    imageUrl = `https://slimeball.mypinata.cloud/ipfs/${hash}`
+                    // OpenSea Contract that doesn't use image url attribute : lh3.googleusercontent
+                } else if (json.content) {
+                    json.content.forEach(attribute => {
+                        if (attribute['@type'] === 'IMAGE' && attribute.representation === 'PREVIEW') {
+                            imageUrl = attribute.url;
+                            hash = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+                        }
+                    })
+                }
+
+                return {
+                    tokenId: tokenId,
+                    hash: hash,
+                    imageUrl: imageUrl,
+                    contractAddress: contractAddress,
+                    imageActive: false
                 }
             }
-        }
-        return tokenUris;
+        });
     }
 
     makeOGActive(e) {
@@ -391,6 +410,7 @@ class App extends React.Component {
         return json;
     }
 
+    // Invoke 1155 safe transfer
     async burnOG() {
         const {ogTokenUris } = this.state;
         let activeTokens = ogTokenUris.filter(token => {
@@ -423,7 +443,7 @@ class App extends React.Component {
             } else {
                 contract = og2Contract.attach(token.contractAddress);
             }
-            return await contract["safeTransferFrom(address,address,uint256)"](accounts[0], capsuleAddress, token.tokenId);
+            return await contract["safeTransferFrom(address,address,uint256, uint256, bytes memory)"](accounts[0], capsuleAddress, token.tokenId, 1, "0x00");
         })
 
         Promise.all(promises).then(() => {
