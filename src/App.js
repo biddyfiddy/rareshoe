@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import blue from './img/blue.png';
 import logo from './img/logo.png';
 import yellow from './img/yellow.png';
+import bg from './img/bg.png';
 import red from './img/red.png';
 import metamask from './img/metamask.png';
 import banner from './img/banner.png';
@@ -656,7 +657,7 @@ class App extends React.Component {
                         <video width="400" height="400" src={animation} type="video/mp4" autoPlay muted>
                         </video>
                         <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description" sx={{ mt: 2 }}>
-                            You have burned {amountBurned} tokens.  Please allow time for it to be reflected on the Etherium Main Net.
+                            You have burned {amountBurned} tokens.  Please allow time for it to be reflected on the Ethereum Main Net.
                         </Typography>
                     </Box>
                 </Modal>
@@ -698,8 +699,10 @@ class App extends React.Component {
 
 
                 {view === "home" ?
-                    <div style={{width: "50%", marginLeft: "auto", marginRight: "auto", textAlign: "center"}}>
+                    <div>
+                    {accounts && accounts.length > 0 ?
 
+                    <div style={{width: "50%", marginLeft: "auto", marginRight: "auto", textAlign: "center"}}>
                         <img style={{marginTop: "10px", width: "100%"}} src={banner}/>
                         <h2 style={{margin: "10px 0px 0px 0px"}}>The next generation of shoes is here!</h2>
                         <h4 style={{margin: "0px"}}>Participate in the Rare Shoe Machine</h4>
@@ -733,10 +736,21 @@ class App extends React.Component {
                                         onClick={this.openOGCollection}>OG Collection</ColorButton>
                             </div>
                         </div>
-                    </div> : view === "burn" ?
+                    </div> : <div style={{ backgroundPositionY: "-200px" , backgroundSize: "cover" , backgroundImage: `url(${bg})`}}>
+                            <div style={{textAlign:"center", height: "1000px"}}>
+                                <h1 style={{ margin: "0px", paddingTop: "100px"}}>👟</h1>
+                                <h1 style={{ margin: "0px"}}>Rare Shoe Machine 2.0</h1>
+                                <Button style={{paddingTop: "40px"}} color="inherit" onClick={this.connectMetamask}>
+                                    <img src={metamask} style={{
+                            width: "25px",
+                            height: "25px",
+                            paddingRight: "10px"
+                        }}/>Connect MetaMask</Button></div></div>
+                    } </div>
+                         : view === "burn" ?
                         <div style={{width: "50%", marginLeft: "auto", marginRight: "auto", textAlign: "center"}}>
                             <h2 style={{marginTop: "50px", marginBottom: "10px"}}>Burn Rare Shoe(s)</h2>
-                            <div style={{marginTop: "10px", marginBottom: "30px"}}>Click below to convert your genesis tokens into Rare Shoe capsules.</div>
+                            <div style={{marginTop: "10px", marginBottom: "30px"}}>Click to select Genesis Token Shoes to convert them into Rare Shoe capsules.</div>
                             {gettingBurned ?
                                 <CircularProgress style={{marginTop: "20px"}} color="inherit"/> : <div>
 
@@ -763,7 +777,7 @@ class App extends React.Component {
                                 <ColorButton variant="text" style={{marginBottom: "10px", textAlign: "center"}}
                                              onClick={this.burnGenesis}>Burn</ColorButton>
                             </div>
-                            <div style={{marginTop: "30px", marginBottom: "30px"}}>Click below to convert your OG tokens into Rare Shoe capsules.</div>
+                            <div style={{marginTop: "30px", marginBottom: "30px"}}>Click to select OG Token Shoes to convert them into Rare Shoe capsules.</div>
                             <div
                                 style={{
                                     marginTop: "20px",
