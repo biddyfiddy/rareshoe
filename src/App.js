@@ -288,6 +288,10 @@ class App extends React.Component {
                 uri = await contract["uri(uint256)"](tokenId);
             }
 
+            if (uri && uri.startsWith("https://api.opensea.io/api/v1/metadata/0x495f947276749Ce646f68AC8c248420045cb7b5e/")) {
+                uri = `https://api.opensea.io/api/v1/metadata/0x495f947276749Ce646f68AC8c248420045cb7b5e/${tokenId}`
+            }
+
             const requestOptions = {
                 method: 'POST',
                 headers: {
@@ -311,6 +315,9 @@ class App extends React.Component {
                         let urlSuffix = imageIpfs.replace("ipfs://", "")
                         hash =  imageIpfs.replace("ipfs://ipfs/", "").replace("/image.jpeg", "");
                         imageUrl = `https://slimeball.mypinata.cloud/${urlSuffix}`;
+                    } else if (imageIpfs.startsWith("https://lh3.googleusercontent.com")) {
+                        imageUrl = imageIpfs;
+                        hash = tokenId;
                     } else {
                         hash = imageIpfs.substring(imageIpfs.lastIndexOf("/") + 1);
                         imageUrl = `https://slimeball.mypinata.cloud/ipfs/${hash}`
