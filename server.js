@@ -78,47 +78,42 @@ const getAllowedCapsules = async (toAddress, fromAddress) => {
 const getNumCapsulesAndTypes = async (address) => {
     let provider = new ethers.providers.EtherscanProvider(ETHER_NETWORK, API_KEY);
     const contract = new ethers.Contract(capsulesAddress, capsulesAbi, provider);
-
-    let total = await contract.totalSupply().catch(err => {
-        return;
-    });
-
+    let tokens = await getOwnedTokens(capsulesAddress, address);
     let red = 0;
     let yellow = 0;
     let blue = 0;
 
-    for (let i = 0; i < total; i++) {
-        let owner = await contract.ownerOf(i).catch(err => {
-            // no op
-        });
-        if (owner.toString().toLowerCase() === address) {
-            let uri = await contract.tokenURI(i)
-            uri = uri.replace("ipfs://", "https://slimeball.mypinata.cloud/ipfs/");
+    let promises = tokens.map(async token => {
+        let uri = await contract.tokenURI(token)
+        uri = uri.replace("ipfs://", "https://slimeball.mypinata.cloud/ipfs/");
 
-            await axios.get(uri, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    "pinata_api_key": PINATA_API_KEY,
-                    "pinata_secret_api_key": PINATA_SECRET_KEY,
-                    "Host": "slimeball.mypinata.cloud"
+        return await axios.get(uri, {
+            headers: {
+                'Content-Type': 'application/json',
+                "pinata_api_key": PINATA_API_KEY,
+                "pinata_secret_api_key": PINATA_SECRET_KEY,
+                "Host": "slimeball.mypinata.cloud"
+            }
+        }).then(response => {
+            let data = response.data;
+            let color = data.color;
+            console.log(color)
+            if (color) {
+                if (color === "red") {
+                    red++;
+                } else if (color === "blue") {
+                    blue++;
+                } else if (color === "yellow") {
+                    yellow++;
                 }
-            }).then(response => {
-                let data = response.data;
-                let color = data.color;
-                if (color) {
-                    if (color === "red") {
-                        red++;
-                    } else if (color === "blue") {
-                        blue++;
-                    } else if (color === "yellow") {
-                        yellow++;
-                    }
-                }
-            }).catch(err => {
-                console.log(err);
-            });
-        }
-    }
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+
+    })
+
+    await Promise.all(promises).catch(err => console.log(err));
 
     return new Promise((resolve, reject) => {
         resolve({
