@@ -97,7 +97,6 @@ const getNumCapsulesAndTypes = async (address) => {
         }).then(response => {
             let data = response.data;
             let color = data.color;
-            console.log(color)
             if (color) {
                 if (color === "red") {
                     red++;
