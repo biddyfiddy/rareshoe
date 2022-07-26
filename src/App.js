@@ -684,7 +684,7 @@ class App extends React.Component {
                                     There was an error minting your capsules.  {mintError}
                                     </Typography> :
                             <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description" sx={{ mt: 2 }}>
-                                You have minted {mintTransactions.length} token(s).  Please allow time for it to be reflected on the Etherium Main Net.
+                                You have minted {mintTransactions.length} token(s).  Please allow time for it to be reflected on the Ethereum Main Net.
 
                                 <Typography style={{padding: "20px", fontFamily: 'Montserrat'}}>
                                 {
