@@ -430,7 +430,7 @@ class App extends React.Component {
         })
 
         let hashes = await response.json();
-        if (!hashes) {
+        if (!hashes || !hashes.txHashes) {
             this.setState({
                 mintError : "Wallet is not in white list"
             })
