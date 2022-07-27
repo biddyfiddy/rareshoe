@@ -329,10 +329,18 @@ class App extends React.Component {
                 let imageUrl;
                 if (json.image) {
                     let imageIpfs = json.image;
-                    if (imageIpfs.endsWith("image.jpg") || imageIpfs.endsWith("image.jpeg")) {
+                    if (imageIpfs.endsWith("image.jpg")) {
                         let urlSuffix = imageIpfs.replace("ipfs://", "")
-                        hash =  imageIpfs.replace("ipfs://ipfs/", "").replace("/image.jpeg", "");
+                        hash = imageIpfs.replace("ipfs://ipfs/", "").replace("/image.jpg", "");
                         imageUrl = `https://slimeball.mypinata.cloud/${urlSuffix}`;
+                    } else if (imageIpfs.endsWith("image.jpeg")) {
+                        let urlSuffix = imageIpfs.replace("ipfs://", "")
+                        hash = imageIpfs.replace("ipfs://ipfs/", "").replace("/image.jpeg", "");
+                        imageUrl = `https://slimeball.mypinata.cloud/${urlSuffix}`
+                    } else if (imageIpfs.endsWith("image.png")) {
+                        let urlSuffix = imageIpfs.replace("ipfs://", "")
+                        hash = imageIpfs.replace("ipfs://ipfs/", "").replace("/image.png", "");
+                        imageUrl = `https://slimeball.mypinata.cloud/${urlSuffix}`
                     } else if (imageIpfs.startsWith("https://lh3.googleusercontent.com")) {
                         imageUrl = imageIpfs;
                         hash = tokenId;
