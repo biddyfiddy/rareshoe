@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import blue from './img/blue.png';
+import eth from './img/eth.png';
 import logo from './img/logo.png';
 import yellow from './img/yellow.png';
 import bg from './img/bg.png';
@@ -17,7 +18,7 @@ import metamask from './img/metamask.png';
 import banner from './img/banner.png';
 import animation from './img/animation.mp4';
 import "@fontsource/montserrat";
-import {ethers} from "ethers"
+import {BigNumber, ethers} from "ethers"
 import Box from '@mui/material/Box';
 import {styled} from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
@@ -85,13 +86,13 @@ class App extends React.Component {
             mintModalOpen: false,
             accounts: null,
             mintQuantity: 0,
+            paidMintQuantity: 0,
             mintError: undefined,
             mintTransactions: [],
             genesisTokenUris: [],
             ogTokenUris: [],
             amountGenesisBurned: 0,
             numCapsulesHeld: 0,
-            allowedCapsules: 0,
             amountOgBurned: 0,
             amountBurned: 0,
             redCapsules: 0,
@@ -109,6 +110,7 @@ class App extends React.Component {
         this.burnGenesis = this.burnGenesis.bind(this);
         this.burnOG = this.burnOG.bind(this);
         this.mint = this.mint.bind(this);
+        this.paidMint = this.paidMint.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.handleMintModalClose = this.handleMintModalClose.bind(this);
@@ -116,6 +118,8 @@ class App extends React.Component {
         this.setView = this.setView.bind(this);
         this.decrementMintQuantity = this.decrementMintQuantity.bind(this);
         this.incrementMintQuantity = this.incrementMintQuantity.bind(this);
+        this.decrementPaidMintQuantity = this.decrementPaidMintQuantity.bind(this);
+        this.incrementPaidMintQuantity = this.incrementPaidMintQuantity.bind(this);
         this.openOGCollection = this.openOGCollection.bind(this);
         this.openGenesisCollection = this.openGenesisCollection.bind(this);
     }
@@ -137,9 +141,23 @@ class App extends React.Component {
     }
 
     incrementMintQuantity() {
-        let { mintQuantity,  allowedCapsules} = this.state
+        let { mintQuantity} = this.state
         this.setState({
-            mintQuantity: mintQuantity ===  allowedCapsules ? allowedCapsules :  mintQuantity + 1
+            mintQuantity: mintQuantity + 1
+        })
+    }
+
+    decrementPaidMintQuantity() {
+        let { paidMintQuantity } = this.state
+        this.setState({
+            paidMintQuantity: paidMintQuantity === 0 ? 0 : paidMintQuantity - 1
+        })
+    }
+
+    incrementPaidMintQuantity() {
+        let { paidMintQuantity} = this.state
+        this.setState({
+            paidMintQuantity: paidMintQuantity + 1
         })
     }
 
@@ -367,6 +385,106 @@ class App extends React.Component {
         this.setState(genesisTokenUris);
     }
 
+    async paidMint() {
+        this.setState({
+            mintModalOpen: true,
+            minting: true
+        })
+
+        const {accounts, paidMintQuantity} = this.state
+        const ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+        const signer = ethersProvider.getSigner();
+
+        let message = {
+            toAddress: capsuleAddress,
+            fromAddress: accounts[0],
+            quantity: paidMintQuantity
+        }
+
+        let signature = await signer.signMessage(JSON.stringify(message));
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: message,
+                signature: signature
+            })
+        };
+
+        let response = await fetch("/mint", requestOptions)
+        let hashes = await response.json();
+        if (!hashes) {
+            return;
+        }
+
+        let rshoePcontractFactory = new ethers.ContractFactory(
+            capsuleAbi,
+            capsuleByteCode,
+            signer,
+        );
+
+        let contractInstance = rshoePcontractFactory.attach(capsuleAddress)
+
+        let promises = hashes.txHashes.map(async hash => {
+
+            const nonce = await signer.getTransactionCount()
+            if (!nonce) {
+                return [];
+            }
+
+            let rawTxn = await contractInstance.populateTransaction.mint(accounts[0], hash, {
+                value: BigNumber.from("80000000000000000")
+            }).catch(err => {
+                console.log(err);
+                this.setState({
+                    mintError : err.message
+                })
+            });
+
+            if (!rawTxn) {
+                console.log("did not work")
+            }
+
+            let signedTxn = await signer.sendTransaction(rawTxn).catch(err => {
+                console.log(err);
+                this.setState({
+                    mintError : err.message
+                })
+            });
+
+            if (!signedTxn) {
+                return [];
+            }
+
+            return await signedTxn.wait().then(reciept => {
+                if (reciept) {
+                    return 'https://etherscan.io/tx/' + signedTxn.hash;
+                } else {
+                    console.log("Error submitting transaction")
+                }
+            }).catch(err => {
+                console.log(err);
+                this.setState({
+                    mintError : err.message
+                })
+            });
+        });
+
+        let transactions = await Promise.all(promises).catch(err => {
+            console.log(err);
+            this.setState({
+                mintError : err.message
+            })
+        })
+        this.setState({
+            mintTransactions : transactions,
+            minting: false
+        })
+    }
+
     async mint() {
         this.setState({
             mintModalOpen: true,
@@ -417,47 +535,56 @@ class App extends React.Component {
                 return [];
             }
 
-
-            /*const gasFeePromise = await ethersProvider.getFeeData();
-            if (!gasFeePromise) {
-                return [];
-            }
-            const gasFee = gasFeePromise.gasPrice;
-            if (!gasFee) {
-                return [];
-            }*/
-
-
-
             let rawTxn = await contractInstance.populateTransaction.burnMint(accounts[0], hash).catch(err => {
                 console.log(err);
+                this.setState({
+                    mintError : err.message
+                })
             });
 
             if (!rawTxn) {
                 console.log("did not work")
+                this.setState({
+                    mintError : "Could not get raw transaction"
+                })
             }
-            /*, {
-                gasPrice: gasFee,
-                nonce: nonce
-            })*/
 
-            //console.log("Submitting transaction with gas price of:", ethers.utils.formatUnits(gasFee, "gwei") + " wei");
             let signedTxn = await signer.sendTransaction(rawTxn).catch(err => {
                 console.log(err);
+                this.setState({
+                    mintError : err.message
+                })
             });
+
+            if (!signedTxn) {
+                this.setState({
+                    mintError : "Signed transaction failed"
+                });
+                return [];
+            }
+
             return signedTxn.wait().then(reciept => {
                 if (reciept) {
                     return 'https://etherscan.io/tx/' + signedTxn.hash;
                 } else {
                     console.log("Error submitting transaction")
+                    this.setState({
+                        mintError : "Error submitting transaction"
+                    })
                 }
             }).catch(err => {
                 console.log(err);
+                this.setState({
+                    mintError : err.message
+                })
             });
         });
 
         let transactions = await Promise.all(promises).catch(err => {
             console.log(err);
+            this.setState({
+                mintError : err.message
+            })
         })
         this.setState({
             mintTransactions : transactions,
@@ -596,7 +723,6 @@ class App extends React.Component {
             await this.getOwnedCapsules();
 
             this.setState({
-                allowedCapsules: response.allowedCapsules,
                 amountGenesisBurned: response.amountGenesisBurned,
                 amountOgBurned: (response.amountOg1Burned + response.amountOg2Burned),
                 numCapsulesHeld: response.capsulesHeld,
@@ -607,7 +733,7 @@ class App extends React.Component {
 
     render() {
 
-        const {numCapsulesHeld, gettingCapsules, amountBurned, redCapsules,blueCapsules, yellowCapsules, totalCapsules, mintError, mintTransactions, minting, mintQuantity, mintModalOpen, burnModalOpen, allowedCapsules, accounts, genesisTokenUris, view, amountGenesisBurned, amountOgBurned, gettingBurned, ogTokenUris} = this.state;
+        const {paidMintQuantity, numCapsulesHeld, gettingCapsules, amountBurned, redCapsules,blueCapsules, yellowCapsules, totalCapsules, mintError, mintTransactions, minting, mintQuantity, mintModalOpen, burnModalOpen, accounts, genesisTokenUris, view, amountGenesisBurned, amountOgBurned, gettingBurned, ogTokenUris} = this.state;
         const ColorButton = styled(Button)(({theme}) => ({
             color: "lightgrey",
             backgroundColor: "#54585a",
@@ -691,12 +817,12 @@ class App extends React.Component {
                                     There was an error minting your capsules.  {mintError}
                                     </Typography> :
                             <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description" sx={{ mt: 2 }}>
-                                You have minted {mintTransactions.length} token(s).  Please allow time for it to be reflected on the Ethereum Main Net.
+                                You have minted {mintTransactions ? mintTransactions.length : 0} token(s).  Please allow time for it to be reflected on the Ethereum Main Net.
 
                                 <Typography style={{padding: "20px", fontFamily: 'Montserrat'}}>
-                                {
+                                {mintTransactions ?
                                     mintTransactions.map(tx => <p><a style={{fontSize: "10px"}} href={tx}>{tx.substring(tx.lastIndexOf("/") + 1)}</a></p>)
-                                }</Typography>
+                                : <div></div>}</Typography>
                             </Typography>}
 
                             </div>}
@@ -811,7 +937,7 @@ class App extends React.Component {
                         </div> :
                         <div style={{width: "50%", marginLeft: "auto", marginRight: "auto", textAlign: "center"}}>
 
-                            <h2 style={{marginTop: "50px", marginBottom: "10px"}}>Mint Capsules</h2>
+                            <h2 style={{marginTop: "50px", marginBottom: "10px"}}>Mint Capsules using burned Tokens</h2>
 
                             {gettingCapsules ?
                                 <CircularProgress style={{marginTop: "20px"}} color="inherit"/> : <div>
@@ -821,11 +947,7 @@ class App extends React.Component {
                             <div style={{marginBottom: "10px"}}>
                                 You have minted {numCapsulesHeld} capsule(s).
                             </div>
-                            <div style={{marginBottom: "30px"}}>
-                                You can mint up to {allowedCapsules} capsule(s).
-                            </div>
                             <div>
-
                                 <div
                                     style={{
                                         marginTop: "20px",
@@ -835,15 +957,33 @@ class App extends React.Component {
                                         color: "lightgrey",
                                         backgroundColor: "#1e1e1e",
                                         boxShadow: "#494949 0px 0px 20px 6px"
-                                    }}
-
-                                >
+                                    }}>
                                     <div>
                                     <p>Select Amount of Capsules to Mint</p>
                                     <ArrowBackIosIcon onClick={this.decrementMintQuantity}/><div style={{marginLeft: "15px", marginRight: "15px", display : "inline"}}>{mintQuantity}</div><ArrowForwardIosIcon onClick={this.incrementMintQuantity}/>
                                     </div>
                                 <ColorButton variant="text" style={{marginTop: "20px", textAlign: "center"}}
                                              onClick={this.mint} disabled={mintQuantity === 0}>Mint</ColorButton>
+                                </div>
+                            </div>
+                            <h2 style={{marginTop: "50px", marginBottom: "20px"}}>Mint Capsules using Ethereum</h2>
+                            <div style={{marginTop: "20px", marginBottom: "20px"}}>
+                                <div
+                                    style={{
+                                        marginTop: "40px",
+                                        marginBottom: "40px",
+                                        padding: "5px",
+                                        borderRadius: "20px",
+                                        color: "lightgrey",
+                                        backgroundColor: "#1e1e1e",
+                                        boxShadow: "#494949 0px 0px 20px 6px"
+                                    }}>
+                                    <div>
+                                    <p>Select Amount of Capsules to Mint.  Each capsule will cost <img src={eth} style={{width: "10px"}}></img> 0.08</p>
+                                    <ArrowBackIosIcon onClick={this.decrementPaidMintQuantity}/><div style={{marginLeft: "15px", marginRight: "15px", display : "inline"}}>{paidMintQuantity}</div><ArrowForwardIosIcon onClick={this.incrementPaidMintQuantity}/>
+                                    </div>
+                                <ColorButton variant="text" style={{marginTop: "20px", textAlign: "center"}}
+                                             onClick={this.paidMint} disabled={paidMintQuantity === 0}>Mint</ColorButton>
                                 </div>
                             </div>
                             <div style={{

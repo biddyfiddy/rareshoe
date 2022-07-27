@@ -437,6 +437,64 @@ app.post("/allowed", async (req, res) => {
     }
 });
 
+app.post("/mint", async (req, res) => {
+    const body = req.body
+    if (!body) {
+        res.status(500).json({
+            message: "No post body"
+        })
+        return;
+    }
+
+    let message = body.message;
+    if (!message || !message.toAddress || !message.fromAddress || !message.quantity) {
+        return res.status(500).json("Request was malformed")
+    }
+
+    let signature = body.signature
+    let address
+
+    try {
+        address = ethers.utils.verifyMessage(JSON.stringify(message), signature)
+    } catch(err){
+        return res.status(401).json("Could not verify signature.  Are you being a bad boy?")
+    }
+
+    if (address.toLowerCase() !== message.fromAddress.toLowerCase()) {
+        return res.status(401).json("Could not verify signature.  Are you being a bad boy?")
+    }
+
+    const toAddress = message.toAddress.toLowerCase()
+    const fromAddress = message.fromAddress.toLowerCase()
+    const quantity = message.quantity;
+    if (!toAddress || !fromAddress || !quantity) {
+        res.status(500).json({
+            message: "Malformed post body"
+        })
+        return;
+    }
+
+    hashes = [];
+    for (let i = 0; i < quantity; i++) {
+
+        const nftJson = await getRandomCapsuleColor();
+
+        const tokenUri = await pinDataToPinata(nftJson);
+        if (!tokenUri) {
+            continue;
+        }
+
+        hashes.push(`ipfs://${tokenUri}`);
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+
+    res.status(200).json({
+        txHashes: hashes
+    })
+
+});
+
 app.post("/mintBurn", async (req, res) => {
     const body = req.body
     if (!body) {
