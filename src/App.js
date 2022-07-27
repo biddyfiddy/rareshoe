@@ -422,9 +422,18 @@ class App extends React.Component {
             })
         };
 
-        let response = await fetch("/mint", requestOptions)
+        let response = await fetch("/mint", requestOptions).catch(err => {
+            console.log(err);
+            this.setState({
+                mintError : err.message
+            })
+        })
+
         let hashes = await response.json();
         if (!hashes) {
+            this.setState({
+                mintError : "Wallet is not in white list"
+            })
             return;
         }
 
