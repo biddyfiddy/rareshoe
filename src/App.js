@@ -423,18 +423,27 @@ class App extends React.Component {
         };
 
         let response = await fetch("/mint", requestOptions).catch(err => {
-            console.log(err);
             this.setState({
-                mintError : err.message
+                mintError : err.message,
+                minting: false
             })
         })
+
+        if (!response || response.status !== 200) {
+            this.setState({
+                mintError : "Wallet is not in white list",
+                minting: false
+            })
+            return [];
+        }
 
         let hashes = await response.json();
         if (!hashes || !hashes.txHashes) {
             this.setState({
-                mintError : "Wallet is not in white list"
+                mintError : "Wallet is not in white list",
+                minting: false
             })
-            return;
+            return [];
         }
 
         let rshoePcontractFactory = new ethers.ContractFactory(
@@ -457,8 +466,10 @@ class App extends React.Component {
             }).catch(err => {
                 console.log(err);
                 this.setState({
-                    mintError : err.message
+                    mintError : err.message,
+                    minting: false
                 })
+                return [];
             });
 
             if (!rawTxn) {
@@ -468,7 +479,8 @@ class App extends React.Component {
             let signedTxn = await signer.sendTransaction(rawTxn).catch(err => {
                 console.log(err);
                 this.setState({
-                    mintError : err.message
+                    mintError : err.message,
+                    minting: false
                 })
             });
 
@@ -485,7 +497,8 @@ class App extends React.Component {
             }).catch(err => {
                 console.log(err);
                 this.setState({
-                    mintError : err.message
+                    mintError : err.message,
+                    minting: false
                 })
             });
         });
@@ -493,7 +506,8 @@ class App extends React.Component {
         let transactions = await Promise.all(promises).catch(err => {
             console.log(err);
             this.setState({
-                mintError : err.message
+                mintError : err.message,
+                minting: false
             })
         })
         this.setState({
