@@ -557,12 +557,12 @@ app.post("/mintBurn", async (req, res) => {
     let allowedCapsules = numGenesisBurned + (numOg1Burned * 2) + (numOg2Burned * 2) - numCapsulesHeld;
 
     console.log(`${allowedCapsules} allowed, ${quantity} requested`)
-    if (quantity > allowedCapsules) {
+/*    if (quantity > allowedCapsules) {
         res.status(500).json({
             message: `Could not mint: not enough burned tokens to generate ${quantity} capsules.  ${allowedCapsules} allowed`
         });
         return;
-    }
+    }*/
     console.log(`Can mint ${quantity}`);
 
     // mint them
