@@ -68,7 +68,7 @@ const signing = (address, blueAmount, redAmount, yellowAmount) => {
 
 const whitelist = [
     {address: "0x7041e50b526d38230b085244f4b51cfb43953010", red : 2, yellow : 0 , blue : 8},
-    {address: "0x24a2183e1fB19d10719b34A31320Bd4aCE6a43c2", red : 5, yellow : 9 , blue : 0},
+    {address: "0x24a2183e1fb19d10719b34a31320bd4ace6a43c2", red : 5, yellow : 9 , blue : 0},
     {address: "0xff5e190e1362605a39dd7a235ba69f5f14fe1430", red : 3, yellow : 1 , blue : 2}
 ];
 
@@ -170,7 +170,7 @@ app.post("/capsules", async (req, res) => {
     }
 
     let capsuleInfo = whitelist.filter(wallet => {
-        return wallet.address === address;
+        return wallet.address.toLowerCase() === address;
     });
 
 
