@@ -228,7 +228,7 @@ class App extends React.Component {
             }
         }).catch(err => {
             this.setState({
-                mintError : err.reason,
+                mintError: err.reason,
                 minting: false
             })
         });
@@ -236,13 +236,23 @@ class App extends React.Component {
 
         this.setState({
             minting: false,
-            hashes
+            hashes: hashes
         });
     }
 
     render() {
 
-        const {hashes, mintError, minting, mintModalOpen, accounts, view, redCapsules, blueCapsules, yellowCapsules} = this.state;
+        const {
+            hashes,
+            mintError,
+            minting,
+            mintModalOpen,
+            accounts,
+            view,
+            redCapsules,
+            blueCapsules,
+            yellowCapsules
+        } = this.state;
 
         const ColorButton = styled(Button)(({theme}) => ({
             color: "lightgrey",
@@ -261,7 +271,8 @@ class App extends React.Component {
                     <Toolbar>
                         <Typography variant="h6" component="div">
                             <ColorButton id="home" onClick={this.setView}>
-                                <img src={logo} style={{width: "25px", height: "25px", paddingRight: "10px"}}/>Rare Shoe Machine</ColorButton>
+                                <img src={logo} style={{width: "25px", height: "25px", paddingRight: "10px"}}/>Rare Shoe
+                                Machine</ColorButton>
                         </Typography>
                         <Typography variant="h6" component="div" style={{paddingLeft: "20px", paddingRight: "20px"}}>
                             <ColorButton id="burn" variant="text" style={{color: "lightgrey", fontSize: "14px"}}
@@ -296,70 +307,89 @@ class App extends React.Component {
                 >
                     <Box sx={style}>
                         <div style={{padding: '20px'}}>
-                        <Typography style={{fontFamily: 'Montserrat', display: 'inline'}} id="modal-modal-title" variant="h6" component="h2">
-                            Redeeming Capsules
-                        </Typography>
-                        <CloseIcon style={{float: 'right'}} onClick={this.handleClose}></CloseIcon>
+                            <Typography style={{fontFamily: 'Montserrat', display: 'inline'}} id="modal-modal-title"
+                                        variant="h6" component="h2">
+                                Redeeming Capsules
+                            </Typography>
+                            <CloseIcon style={{float: 'right'}} onClick={this.handleClose}></CloseIcon>
                         </div>
                         {minting ? <CircularProgress color="inherit"></CircularProgress> :
-                        <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description" sx={{ mt: 2 }}>
-                            {hashes ? hashes.map(hash => {
-                                <p>${hash}</p>
-                            }) : <div>
-                                { mintError ? <Typography>{mintError}</Typography> : <p></p>}</div>}
-                        </Typography>}
+                            <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description"
+                                        sx={{mt: 2}}>
+                                {hashes ? hashes.map(hash => {
+                                    return <Typography>${hash}</Typography>
+                                }) : <div>
+                                    {mintError ? <Typography>{mintError}</Typography> :
+                                        <Typography></Typography>}</div>}
+                            </Typography>}
                     </Box>
                 </Modal>
 
                 {view === "home" ?
                     <div>
-                    {accounts && accounts.length > 0 ?
+                        {accounts && accounts.length > 0 ?
 
-                    <div style={{width: "50%", marginLeft: "auto", marginRight: "auto", textAlign: "center"}}>
-                        <img style={{marginTop: "10px", width: "100%"}} src={banner}/>
-                        <h2 style={{margin: "10px 0px 0px 0px"}}>The next generation of shoes is here!</h2>
-                        <h4 style={{margin: "0px"}}>Participate in the Rare Shoe Machine</h4>
+                            <div style={{width: "50%", marginLeft: "auto", marginRight: "auto", textAlign: "center"}}>
+                                <img style={{marginTop: "10px", width: "100%"}} src={banner}/>
+                                <h2 style={{margin: "10px 0px 0px 0px"}}>The next generation of shoes is here!</h2>
+                                <h4 style={{margin: "0px"}}>Participate in the Rare Shoe Machine</h4>
 
-                        <hr style={{marginBottom: "40px", marginTop: "40px", width:"50%"}} color="#484848"/>
+                                <hr style={{marginBottom: "40px", marginTop: "40px", width: "50%"}} color="#484848"/>
 
-                        <div style={{textAlign: "left"}}>
+                                <div style={{textAlign: "left"}}>
 
-                            <p>Burn your Genesis and OG Rare Shoe to earn capsules. Capsules will be used to mint Rare Shoe 2.0 in the future.
-                            Genesis Holders will receive 1 capsule for every 1 NFTs burned.
-                            OG Holders will receive 2 capsule for every 1 NFT burned.</p>
-                            <hr style={{marginBottom: "40px", marginTop: "40px", width:"50%"}} color="#484848"/>
-                            <h3 style={{textAlign: "center"}}>The Rare Shoe Genesis Collection</h3>
-                            <p>
-                                This collection consists of 2,327 generative 3D shoes, created and designed by Sneaker lovers.
-                                This is much more than just a shoe, this is the future of Fashion NFT. The first-ever series
-                                of Generative collectible NFT sneaker artworks. Inspired by iconic silhouettes, the
-                                ongoing selection of crypto art drops will feature Rare Shoe’s reimagining of popular
-                                sneakers.
-                            </p>
-                            <div style={{textAlign: "center", marginTop: "40px"}}>
-                            <ColorButton id="burn" variant="text" style={{padding: "16px", fontSize: "14px"}}
-                                         onClick={this.openGenesisCollection}>Genesis Collection</ColorButton>
+                                    <p>Burn your Genesis and OG Rare Shoe to earn capsules. Capsules will be used to
+                                        mint Rare Shoe 2.0 in the future.
+                                        Genesis Holders will receive 1 capsule for every 1 NFTs burned.
+                                        OG Holders will receive 2 capsule for every 1 NFT burned.</p>
+                                    <hr style={{marginBottom: "40px", marginTop: "40px", width: "50%"}}
+                                        color="#484848"/>
+                                    <h3 style={{textAlign: "center"}}>The Rare Shoe Genesis Collection</h3>
+                                    <p>
+                                        This collection consists of 2,327 generative 3D shoes, created and designed by
+                                        Sneaker lovers.
+                                        This is much more than just a shoe, this is the future of Fashion NFT. The
+                                        first-ever series
+                                        of Generative collectible NFT sneaker artworks. Inspired by iconic silhouettes,
+                                        the
+                                        ongoing selection of crypto art drops will feature Rare Shoe’s reimagining of
+                                        popular
+                                        sneakers.
+                                    </p>
+                                    <div style={{textAlign: "center", marginTop: "40px"}}>
+                                        <ColorButton id="burn" variant="text"
+                                                     style={{padding: "16px", fontSize: "14px"}}
+                                                     onClick={this.openGenesisCollection}>Genesis
+                                            Collection</ColorButton>
+                                    </div>
+                                    <hr style={{marginBottom: "40px", marginTop: "40px", width: "50%"}}
+                                        color="#484848"/>
+                                    <h3 style={{textAlign: "center"}}>The Rare Shoe OG Collection</h3>
+                                    <p>This collection was released to early supporters of the project, prior to the
+                                        Genesis collection.
+                                        It consists of 275 generative 3D shoes.</p>
+                                    <div style={{textAlign: "center", marginTop: "40px"}}>
+                                        <ColorButton id="burn" variant="text"
+                                                     style={{padding: "16px", fontSize: "14px"}}
+                                                     onClick={this.openOGCollection}>OG Collection</ColorButton>
+                                    </div>
+                                </div>
+                            </div> : <div style={{
+                                backgroundPositionY: "-200px",
+                                backgroundSize: "cover",
+                                backgroundImage: `url(${bg})`
+                            }}>
+                                <div style={{textAlign: "center", height: "1000px"}}>
+                                    <h1 style={{margin: "0px", paddingTop: "100px"}}>👟</h1>
+                                    <h1 style={{margin: "0px"}}>Rare Shoe Machine 2.0</h1>
+                                    <Button style={{paddingTop: "40px"}} color="inherit" onClick={this.connectMetamask}>
+                                        <img src={metamask} style={{
+                                            width: "25px",
+                                            height: "25px",
+                                            paddingRight: "10px"
+                                        }}/>Connect MetaMask</Button></div>
                             </div>
-                            <hr style={{marginBottom: "40px", marginTop: "40px", width:"50%"}} color="#484848"/>
-                            <h3 style={{textAlign: "center"}}>The Rare Shoe OG Collection</h3>
-                            <p>This collection was released to early supporters of the project, prior to the Genesis collection.
-                                It consists of 275 generative 3D shoes.</p>
-                            <div style={{textAlign: "center", marginTop: "40px"}}>
-                                <ColorButton id="burn" variant="text" style={{padding: "16px", fontSize: "14px"}}
-                                        onClick={this.openOGCollection}>OG Collection</ColorButton>
-                            </div>
-                        </div>
-                    </div> : <div style={{ backgroundPositionY: "-200px" , backgroundSize: "cover" , backgroundImage: `url(${bg})`}}>
-                            <div style={{textAlign:"center", height: "1000px"}}>
-                                <h1 style={{ margin: "0px", paddingTop: "100px"}}>👟</h1>
-                                <h1 style={{ margin: "0px"}}>Rare Shoe Machine 2.0</h1>
-                                <Button style={{paddingTop: "40px"}} color="inherit" onClick={this.connectMetamask}>
-                                    <img src={metamask} style={{
-                            width: "25px",
-                            height: "25px",
-                            paddingRight: "10px"
-                        }}/>Connect MetaMask</Button></div></div>
-                    } </div>
+                        } </div>
                     :
                     <div>
 
