@@ -316,11 +316,9 @@ class App extends React.Component {
                         {minting ? <CircularProgress color="inherit"></CircularProgress> :
                             <Typography style={{padding: "20px", fontFamily: 'Montserrat'}} id="modal-modal-description"
                                         sx={{mt: 2}}>
-                                {hashes ? hashes.map(hash => {
-                                    return <Typography>${hash}</Typography>
-                                }) : <div>
-                                    {mintError ? <Typography>{mintError}</Typography> :
-                                        <Typography></Typography>}</div>}
+                                {mintError ? <Typography>{mintError}</Typography> : <div>
+                                <Typography>Your shoes have been successfully redeemed!</Typography>
+                                {hashes ? <a href={hashes}>View Transaction</a> : <Typography></Typography>}</div>}
                             </Typography>}
                     </Box>
                 </Modal>
