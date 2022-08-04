@@ -8,6 +8,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 const WALLET_KEY = process.env.WALLET_KEY;
+const ETHER_API_KEY = process.env.ETHER_API_KEY;
 const ETHER_NETWORK = process.env.ETHER_NETWORK;
 
 app.use(express.json());
@@ -16,7 +17,8 @@ app.use(express.static(path.join(__dirname, 'build')));
 const rs20Address = require('./src/abi/rs20.json').address;
 const capsulesAddress = require('./src/abi/capsules.json').address;
 const capsulesAbi = require('./src/abi/capsules.json').abi;
-const capsulesByteCode = require('./src/abi/capsules.json').bytecode;
+const whitelist = require('./src/whitelist/list.json');
+
 
 const web3Instance = new web3(process.env.MAINNET_RPC_URL);
 
@@ -66,12 +68,6 @@ const signing = (address, blueAmount, redAmount, yellowAmount) => {
 
 }
 
-const whitelist = [
-    {address: "0x7041e50b526d38230b085244f4b51cfb43953010", red : 2, yellow : 0 , blue : 8},
-    {address: "0x24a2183e1fb19d10719b34a31320bd4ace6a43c2", red : 5, yellow : 9 , blue : 0},
-    {address: "0xff5e190e1362605a39dd7a235ba69f5f14fe1430", red : 3, yellow : 1 , blue : 2}
-];
-
 const getItem = (address, list) => {
     return list.filter(listItem => {
         return listItem.address === address;
@@ -90,7 +86,7 @@ const updateItem = (address, list, red, blue, yellow) => {
 
 app.post("/holders", async (req, res) => {
 
-    let provider = new ethers.providers.EtherscanProvider("mainnet", "3DY9FZ5BZ8EWFWI81QUJXN39WNB8G1AC9F");
+    let provider = new ethers.providers.EtherscanProvider("mainnet", ETHER_API_KEY);
 
     let contract = new ethers.Contract(
         capsulesAddress,
@@ -102,7 +98,12 @@ app.post("/holders", async (req, res) => {
         return;
     });
 
+    let totalRed = 0;
+    let totalYellow = 0;
+    let totalBlue = 0;
+
     let list = []
+
     for (let i = 0; i < total; i++) {
         let owner = await contract.ownerOf(i).catch(err => {
             // no op
@@ -128,10 +129,13 @@ app.post("/holders", async (req, res) => {
             let color = response.data.color;
             if (color === 'blue') {
                 blue = blue + 1;
+                totalBlue++;
             } else if (color === 'yellow') {
                 yellow = yellow + 1;
+                totalYellow++;
             } else if (color === 'red') {
                 red = red + 1;
+                totalRed++;
             }
         }).catch(err => {
             console.log(err);
@@ -148,7 +152,7 @@ app.post("/holders", async (req, res) => {
     list.forEach(listItem => {
         console.log(listItem);
     })
-
+    console.log({ totalRed, totalYellow, totalBlue, total: (totalBlue + totalRed + totalYellow)});
     res.status(200).json(list);
 });
 
@@ -173,11 +177,10 @@ app.post("/capsules", async (req, res) => {
         return wallet.address.toLowerCase() === address;
     });
 
-
     if (capsuleInfo.length === 1) {
         res.status(200).json(capsuleInfo[0]);
     } else {
-        res.status(500).json({ message: "Could not find wallet"});
+        res.status(500).json({ message: "Wallet was not found in white list.  Do you have capsules?"});
     }
 });
 
@@ -196,9 +199,8 @@ app.post("/mint", async (req, res) => {
 
     let walletAddress = body.walletAddress.toLowerCase();
 
-
     let capsuleInfo = whitelist.filter(wallet => {
-        return wallet.address === walletAddress;
+        return wallet.address.toLowerCase() === walletAddress;
     });
 
 

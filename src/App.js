@@ -183,6 +183,11 @@ class App extends React.Component {
         })
 
         if (!response || response.status !== 200) {
+            let reason = await response.json();
+            this.setState({
+                mintError: reason.message,
+                minting: false
+            });
             return;
         }
 
@@ -278,11 +283,11 @@ class App extends React.Component {
                             <ColorButton id="burn" variant="text" style={{color: "lightgrey", fontSize: "14px"}}
                                          onClick={this.setView} disabled>Burn</ColorButton>
                         </Typography>
-                        <Typography variant="h6" component="div">
+                        <Typography variant="h6" component="div" style={{paddingLeft: "20px", paddingRight: "20px"}}>
                             <ColorButton id="capsule" variant="text" style={{color: "lightgrey", fontSize: "14px"}}
                                          onClick={this.setView} disabled>Capsules</ColorButton>
                         </Typography>
-                        <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                        <Typography variant="h6" component="div" sx={{paddingLeft: "20px", paddingRight: "20px", flexGrow: 1}}>
                             <ColorButton id="mint" variant="text" style={{color: "lightgrey", fontSize: "14px"}}
                                          onClick={this.setView}>RS 2.0</ColorButton>
                         </Typography>
