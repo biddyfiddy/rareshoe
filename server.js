@@ -205,7 +205,7 @@ app.post("/mint", async (req, res) => {
 
 
     if (capsuleInfo.length !== 1) {
-        return res.status(500).json({ message: "Could not find wallet"});
+        return res.status(500).json({ message: "Wallet was not found in white list.  Do you have capsules?"});
     }
 
     let capsule = capsuleInfo[0];
