@@ -1,1226 +1,1334 @@
 [
-    {
-        "address": "0xE5f8fb26FdEe365589c622ac89d39e93625D6c09",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x24A370429cC83ee449DAf04819e564932E8EA65e",
-        "blue": 2,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x0fAf99C4C8211a4a1fCb4DA8e3866C9c9f612DDf",
-        "blue": 0,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0x24227282c501F9AC33badbA624BdFd061efb759F",
-        "blue": 2,
-        "red": 4,
-        "yellow": 3
-    },
-    {
-        "address": "0x34EE160D57C7C14D018B6F751fAfd1060b560dB6",
-        "blue": 1,
-        "red": 2,
-        "yellow": 2
-    },
-    {
-        "address": "0x6Bd0c23B82Ab96ecB56DcA6A15A008ef28cc57Ec",
-        "blue": 2,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0xC37fB6cE766C486Ab03DB2DF8cFe425Caaf6D541",
-        "blue": 0,
-        "red": 2,
-        "yellow": 4
-    },
-    {
-        "address": "0x269502E7eE2ba8269f019B50985a2A290E32362b",
-        "blue": 1,
-        "red": 3,
-        "yellow": 0
-    },
-    {
-        "address": "0xD6C2f6960a44004ac0F5E792b1D6678bB13427d0",
-        "blue": 2,
-        "red": 2,
-        "yellow": 2
-    },
-    {
-        "address": "0xB2a21ac4ABC6f685F01343855EC0852dde222Be3",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0xB2d60143097b4F992BfBE955a22dbb2AcD9a8EAb",
-        "blue": 2,
-        "red": 2,
-        "yellow": 1
-    },
-    {
-        "address": "0x565196152F8A4066a51b498a44A9981145d441Ff",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0xc375A30913B61b0d7750aB613cDd8793AaBa9272",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x0DA2f3401296427D302326CdF208B79f83Abc995",
-        "blue": 6,
-        "red": 10,
-        "yellow": 12
-    },
-    {
-        "address": "0x9CaDc50e6672b9466316dc26eA995D38AbCed675",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x77771Eb9Efc4FfD5E8dC2eb952fbBa20AEE5975C",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x7041e50b526D38230b085244f4B51cfb43953010",
-        "blue": 4,
-        "red": 6,
-        "yellow": 2
-    },
-    {
-        "address": "0x744143D55Fa960F0364C23E6cb0c4D673C4E2017",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x609A8032F079DDE95459A2d16fD34457e71cDbbf",
-        "blue": 5,
-        "red": 7,
-        "yellow": 6
-    },
-    {
-        "address": "0x6ADBd11803E39853d65699Ddc6fa1d19f73F9e3E",
-        "blue": 0,
-        "red": 3,
-        "yellow": 2
-    },
-    {
-        "address": "0x8C3e3eD2DA1FFb6BD6fEFCbC938fE22a390eA579",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x0b3462BE80bA613435b4458e0da34F7a53EBF4b2",
-        "blue": 0,
-        "red": 2,
-        "yellow": 0
-    },
-    {
-        "address": "0xF408A40E46a3953684985fa46a625bA1B5573a9B",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x81FB8D312Aaa2b4A4343C59C1E22A3464eF460a7",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x15a62F8aa28d45F726453c5fdFdCe242135EfB76",
-        "blue": 0,
-        "red": 2,
-        "yellow": 0
-    },
-    {
-        "address": "0x7a1b7f694772672bA4154E9D05e39E489De48344",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x56B283376f770713D1B77BcF9481bE26812950aA",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xD472D2171CC42846ecE5FCA08239265Ff0b8deF2",
-        "blue": 1,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x51047Ac8977d0DD35F3E1F35d75DDf81b8989f3D",
-        "blue": 1,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0xEdd876424B9ec85109421D14C27E954b87825312",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x14382e6bd66bBd0bF1F421e9E76EF166b8b1FD70",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0xD857CcacaaFB91806BBF1f4016bBC57d26D7174c",
-        "blue": 4,
-        "red": 1,
-        "yellow": 6
-    },
-    {
-        "address": "0x8D3f81dE6ACDA2EcCd69F542526ffB864FAE600b",
-        "blue": 1,
-        "red": 0,
-        "yellow": 3
-    },
-    {
-        "address": "0xeE7601251B3fe157aa52dDB9EA06b7Ae401Da978",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x9c2b02Ea74948FB6C7ea142Ba14c4DF5CCbC35Ee",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x2fA08Fcc7e6FAf795417c3A73189939c7a818817",
-        "blue": 1,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x3D47ecD659F2308731A33792761375c1f82F1228",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xa8c6990BC778611Ffd5B94Db6BeFefC7aE74b147",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x882978E05a0097157948020e151E7A3aa810f26E",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x4055888f80B34758f7126d0e2Cc24A12B69e1cc9",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0xC59523e69Dc4EF360702fE9cAB9ac7376B5a4cB2",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0xef77Cf894ED766B233e2009658e55f49D6C3440d",
-        "blue": 2,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0xCC8a4Bd7B33938a6331C7727667eDe9C9ff1341e",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x48E130835fFeb0B4dDaDC86e1a8a8bbdAB023988",
-        "blue": 5,
-        "red": 1,
-        "yellow": 2
-    },
-    {
-        "address": "0xb4BfFcfeDC5E129fc960df7399e7FA23810156d1",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x42D5eC165226B750174BaB221CFDf5D347d5BD54",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x21B83B33583e28953F604a236aE3576C57Ff526c",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xA6A55f02c30e46cF365C0cE07D1C086AB3379307",
-        "blue": 2,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x5BC07EFF0B6EbF3468131213a3273124F40092Ab",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0xc50e2b4ea7B6413639F7517aB02cbf579a18AA7d",
-        "blue": 0,
-        "red": 3,
-        "yellow": 1
-    },
-    {
-        "address": "0x49E1c65c4fE683b7C904319B5C66C10EB49c240C",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x3219f132D5D1915363bB04BA97738cCd2518e867",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xfbcC7a8ecF4FEd1FC6948a357198D51d33CD6C5E",
-        "blue": 1,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x353285385ED77d1E90d3788C74bDFA2534c11ebD",
-        "blue": 1,
-        "red": 4,
-        "yellow": 3
-    },
-    {
-        "address": "0xa5F37E1E15E81DfDA6dFD411eC741F25ABf210cE",
-        "blue": 2,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x80a75c8B10e5B0cdffC40E4CC9ac9752f1929A78",
-        "blue": 0,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0x7DF76FDEedE91d3cB80e4a86158dD9f6D206c98E",
-        "blue": 10,
-        "red": 20,
-        "yellow": 12
-    },
-    {
-        "address": "0xfDd0eA398A0bBDC08B35D2db53a7BBb70223d78b",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0xd965c0bE4403D0301fE15b3e0b16c7FB9E82072f",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x5f2175a85aA9E7300C83bE7958bF395Dc7Ec7795",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x542726357a133069e26DBE96930Bdbe393cD843C",
-        "blue": 1,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x4716A6058E7916Be509F6d93a8986867E6ac8FDe",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x43e1f5B962F9205Bbc22c8A8E9984BD324782437",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x275e73Dfc1C066a4620c0Ebe2a1d4eC62563d77E",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x2c3474Bfe64cD9748be69D24c30cC91639265e68",
-        "blue": 2,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0xEA32512e8C872AAb94329Cb737722CD6a68904Fb",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x474870F9cD749c140791C013F62b3D82324C8841",
-        "blue": 2,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xa63967e4E87844972162d6b6897f4405f9903Ff2",
-        "blue": 1,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0xBe3BF9Bb42bF423695B792250BE206C9A58e2dE1",
-        "blue": 1,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x8Eb07e2f87198FE19961fB4AC8046e54639B0b83",
-        "blue": 2,
-        "red": 5,
-        "yellow": 5
-    },
-    {
-        "address": "0xEe0D226287F838Da6aB7eB10F72bdc14b735C168",
-        "blue": 0,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0x59A6aF1535E79cC059B328A45B659E8D59C297CB",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x3546BD99767246C358ff1497f1580C8365b25AC8",
-        "blue": 1,
-        "red": 2,
-        "yellow": 1
-    },
-    {
-        "address": "0x784dac29eA1430752F22cac3e46ed795Ac38c4B0",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x510497CA2fb35a3cD97f3e5aDCdaFABb9e48eD36",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x752e04A3460B31A47f7BBD4153D7b76baC3eebc8",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x961d12c4C8af611bC0cA5804B2d261155b385AA5",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x7F1c6d0017915F2DC140C96FfEF2eEe1D9DcEAD4",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0xEf43e1B0D014cd1DCFE706993713B2469707656b",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x3c01Bc75176b08c89CA25Ea43bD6E3c93d75bf73",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x1625600b38DFA50E3A29A93d5dD210360630E527",
-        "blue": 4,
-        "red": 2,
-        "yellow": 3
-    },
-    {
-        "address": "0xE633A9e4CB215aDbfA69A7b468b7FEf5D2ed71Bf",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x86aD40B7B57551402E191eB2E51dDe23DEBd9E13",
-        "blue": 0,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0xdC190d7cEA8e8bf0b381617062200C10CFFF0A91",
-        "blue": 6,
-        "red": 3,
-        "yellow": 3
-    },
-    {
-        "address": "0xB46638bF5509Fe9B81a69875AeC18aaB00160eB7",
-        "blue": 2,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x034d2F43C33f0cfF711A1afddb0D555A2Dfe4585",
-        "blue": 2,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x3dFF236850afF41158182bd032b07Df8ADB8C5f3",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x26dD4199269bec9457F84ADb029dB917A910c711",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0xfEaC48b8ad13A5Cde14898aC2ceF8CFe1B6F2df2",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x4f524DEC3deDE837Be26a51D3095239DD2AF385b",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xDdAfC3Bcde71b1f2f8220068C70555d257B4484B",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x09B50000E8366309283f2733E6fb6aB59370C9ae",
-        "blue": 14,
-        "red": 8,
-        "yellow": 8
-    },
-    {
-        "address": "0x2f778bb1a3Ff2f311C3B25e21A2027d1FFAc7700",
-        "blue": 1,
-        "red": 1,
-        "yellow": 8
-    },
-    {
-        "address": "0x7213A4764125B3fBBAC5d4BA4750448b10a018C7",
-        "blue": 0,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0x54339Ac9c4E197b2C24A969bcc59c51939350CB2",
-        "blue": 0,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0x6b1D635d090FCb2A27548b2AE22C352137002898",
-        "blue": 2,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x9d093424C715385b4B9Ab1BDF729543dF5888943",
-        "blue": 3,
-        "red": 3,
-        "yellow": 3
-    },
-    {
-        "address": "0x22BC52BF65b56e62e88F0CE08EF17b70F1043c81",
-        "blue": 0,
-        "red": 2,
-        "yellow": 0
-    },
-    {
-        "address": "0x30119E6DA1578F721cf5e9945b148Ae2E512ca01",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x548E86f72F5EA60874E18ED421E4Cd84659FC486",
-        "blue": 3,
-        "red": 5,
-        "yellow": 8
-    },
-    {
-        "address": "0x450844AB03C3c9Aef4e81aa785f6730DECc2Fa64",
-        "blue": 2,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x4fa6E82de003a3855DfdC380A29ce9F3660cAB8F",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x24a2183e1fB19d10719b34A31320Bd4aCE6a43c2",
-        "blue": 1,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0xE7a70BC6f94Dac32ab5a5D6C2D9964254348E5DD",
-        "blue": 2,
-        "red": 2,
-        "yellow": 3
-    },
-    {
-        "address": "0xB476F443F2Cc8738b09C94A12550b8CCfF557FFD",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x860AE585009bC4d04430b787caD6d5A62400787c",
-        "blue": 1,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x752a19d348399170f57D3b9bE81e823DC0B631A2",
-        "blue": 0,
-        "red": 2,
-        "yellow": 0
-    },
-    {
-        "address": "0xFf5E190e1362605a39Dd7a235Ba69F5f14FE1430",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0xcaB6e2961cd5d36DB4d7Baf26D29B75b0f5BD171",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x3FE7493385EAAE7ec98DC33f77b4fBe71aeb5Edd",
-        "blue": 1,
-        "red": 2,
-        "yellow": 0
-    },
-    {
-        "address": "0x12f8952B2b7e64a3A50868BcF7155253786d21Bc",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x64A4429038A43264898e09557a548093bFBB465f",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x4B725e4CA093156850fcd86eA11A516a8362F85A",
-        "blue": 0,
-        "red": 2,
-        "yellow": 1
-    },
-    {
-        "address": "0x99599Eb15e86c4aA5eBb440C49614BE0dd901603",
-        "blue": 0,
-        "red": 1,
-        "yellow": 2
-    },
-    {
-        "address": "0xd27FC8AEE201Ec6a35f3AE32C457D04c44965158",
-        "blue": 0,
-        "red": 0,
-        "yellow": 3
-    },
-    {
-        "address": "0x6b4D7A4544a1E71655d241F9627EF1EB06E741aE",
-        "blue": 1,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0x9FC718829f6E281bA597cC41362AA2D5590b544c",
-        "blue": 0,
-        "red": 2,
-        "yellow": 1
-    },
-    {
-        "address": "0x7bFE09bA46a974deD1334B8671B836f7F35cEd5F",
-        "blue": 1,
-        "red": 0,
-        "yellow": 3
-    },
-    {
-        "address": "0x1bfaAF82DA60ec7ecE04cd21691cd31b05d7c157",
-        "blue": 0,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0x61800F3230A6954888032a5f0bC37a7611a719Ae",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0xfb83388Cb78A07Bd7e163E70Aecd1d1e2a19D81E",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x5741553f19A9E0cf007118d6bCCD14AE42280292",
-        "blue": 0,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0x0Ca974E2937d0F06B3631e0a5504406cC62F4eBf",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0xBdF18eCc3325d7598Dcf60B970b64357Bd8C4C9F",
-        "blue": 1,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x3A7f6bdf06851d41Df38aaf1fe9A6aa3582bE104",
-        "blue": 1,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0x344066cd5fdD81CBCc402E900d62b4c4211beB48",
-        "blue": 0,
-        "red": 2,
-        "yellow": 0
-    },
-    {
-        "address": "0xf32A1CA887C4A187a2989eb9E3cF1D301816685a",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x26439aEB008d63B6686798b5F08a84C7AbeFbd80",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x277c74f45724945b2066F305fcb5a609312390E2",
-        "blue": 0,
-        "red": 1,
-        "yellow": 3
-    },
-    {
-        "address": "0x1f59925DCb315bB3ADAb3F18277c456AB73408b0",
-        "blue": 5,
-        "red": 8,
-        "yellow": 4
-    },
-    {
-        "address": "0x9Fcd585BCfD123e3FD5800CEae06618Ca9BdE218",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xb8c2A8ca44E96d970802DFd9261662C81c17F47D",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x08a6c5774ee60FC737b91F9DE1274ACDb638b337",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x9C51532Ef51ab720514b5acAf97Fe6C600FbFb54",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x2AB6f51F76a8BFAa260fFa7792e5B399EE0309B2",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x17b76551FF8d26D692DA2B9ba02Dea9D3EcDDE55",
-        "blue": 0,
-        "red": 2,
-        "yellow": 0
-    },
-    {
-        "address": "0xae52649e1e9d280Bf33F64829e0810D96c30C929",
-        "blue": 0,
-        "red": 1,
-        "yellow": 4
-    },
-    {
-        "address": "0x377895405bC4821379b7163a0a26DFC063e67215",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0xE74F61730001BcCE09B2006b176Ab1BabDE27eA7",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x968AF8c01D117Ac36AbcD1374eee7799Bf53CF42",
-        "blue": 0,
-        "red": 2,
-        "yellow": 1
-    },
-    {
-        "address": "0x499cD54e5B360ECD071905866D64065eb7196Ba5",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x30D367A89E40fAC84EA3Bab307238aD2071d119d",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x9388a1C6070932da551bEb97D597A36735Dd7835",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x910eD86248A4aFc2814E115aE415ac94198168d7",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x8132eC8C2574c133bDC5C7D4CB220C11373357e3",
-        "blue": 0,
-        "red": 1,
-        "yellow": 3
-    },
-    {
-        "address": "0x08B4D07D6EE91Ff17036a64892A12a9df09AC77D",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x584D65B4B89CD40d941D87CD4FCceab774373dEa",
-        "blue": 3,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x6609DFA1cb75d74f4fF39c8a5057bD111FBA5B22",
-        "blue": 1,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0xa65B8415318f7A94730f68b443EFcf9C30cfbD14",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x4F5EfCAb1274BD8137B81E7c40E05160c6C936c3",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x9a5D16e62D0E95348EC940504c98A331bd7b8338",
-        "blue": 0,
-        "red": 2,
-        "yellow": 0
-    },
-    {
-        "address": "0xe87B56Cf45B98E2cD37B56935b6fdD7A9F37962c",
-        "blue": 4,
-        "red": 5,
-        "yellow": 0
-    },
-    {
-        "address": "0xaf469C4a0914938e6149CF621c54FB4b1EC0c202",
-        "blue": 2,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x6f0B770619B49Bc42022608feAA21670F082A964",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xFd4938b02074DF1d3Aa15a97Ee561f40704b2195",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x96A6AE1D864D3B3A8fA8D98Ee364Dc33137b5D2d",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0xCf987D6DCF74525d229E5b3ccdF938a38161c48b",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x4Cf22e6c6c4e4Ffb4B5B86E5b0FC5c6fa5dab62D",
-        "blue": 1,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0xdEfB4c3bFeA0Fd4d99854434A5640baF26E46BA5",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xDaE5bcEE5fEd1C2D1d17610424c215169Df5b1Aa",
-        "blue": 1,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0xB3D264380FFcf9E764A16Ee9Addd08bdCF46093f",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x127c1Df80c7426dBEbb070E20d304c5dc6C169f3",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xa0cb9dca76BBFd9068162A834A547D5208C085Ca",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x7b15d62B1FcF15DDD99FC09235d6492737C1e630",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x56Ee860AEfa530d1Eda453602aC08fD6b9334332",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x0737880a1866Bfbda9dea62c91BA00df6C79f395",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x6265aaFC8D25B36f97181C44d0EB6693f00EbA17",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x55EEeE5F33036885C336a78564522e89B69c26dC",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x44AD56B79f26BbE75a7E810E862636700780aC98",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x31b3755208F110076c3f5FD51A8E95218Ba9b8DD",
-        "blue": 1,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x2A44195b273dA05b0071D801C996B83E7FB460cA",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xbFADFF92855cBb45495Df33E45D91170E478B2B5",
-        "blue": 3,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x09f40C325BCE1ea2EfDb534779F3962F168f5e11",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x1a544fb35851B41864216C65c2b00b17694557a4",
-        "blue": 0,
-        "red": 2,
-        "yellow": 1
-    },
-    {
-        "address": "0xc3cC7F3DBfd0b05bE31eAA070719C1cFC96d2E2B",
-        "blue": 0,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0xBeb0737585bd8a9306e2777966d413bF3735861B",
-        "blue": 0,
-        "red": 10,
-        "yellow": 0
-    },
-    {
-        "address": "0xF9107317B0fF77eD5b7ADea15e50514A3564002B",
-        "blue": 0,
-        "red": 0,
-        "yellow": 2
-    },
-    {
-        "address": "0xEA9eCa5647c7F7FcbE13594435d2969c42D9429f",
-        "blue": 3,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x93953F26C713627B6d6f413954a3994A22b69E4C",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0xCB84FDe82519e6FA12d12c8800b7a9c55B0315cd",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x012f3976C93260F7E4CE1289638278a870b6678D",
-        "blue": 2,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x720E18bC7865Bd329128dB6E5954FB7A1898d8B9",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x98e7dEd15754b8554ca689997122FEEc2274Ffa5",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x8b22244ADCDa6853548e08952586C13fF020987c",
-        "blue": 5,
-        "red": 4,
-        "yellow": 1
-    },
-    {
-        "address": "0x2b7c090558E57fdA174CD70d1c51E654165CD16C",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0xD172680150daCF83d136d7D6f6083fbDa4B306D0",
-        "blue": 1,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x477b6F91c9481fC64E9080ffD00527CD53563dD6",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xF9B957c410AF8067719A9c96F85A46046961A3BC",
-        "blue": 1,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x64Bf7a7b25A5b15c1572aaF464204A8a528123f4",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x7A0031058ca934F14CB85fC222c78304174B07c0",
-        "blue": 3,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x1a668a81d13bd372e7e39438b75d79e7E28db0E5",
-        "blue": 1,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0xe500EeA962b32639d89BB7062dF7C17be17202c0",
-        "blue": 1,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x9723a9C75A0b05A1432cA729593013B0C762c6ba",
-        "blue": 0,
-        "red": 2,
-        "yellow": 0
-    },
-    {
-        "address": "0xf3Fbb2c0A711529eF9b81fE59a5Ef5b8f1E0eB27",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x68cA5862E86A235B7c89A8C1cbf82BC91e8528b1",
-        "blue": 2,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x679B3E6c39c07BAC7d4d55B8b7E9a9aA40c94C8f",
-        "blue": 2,
-        "red": 0,
-        "yellow": 0
-    },
-    {
-        "address": "0x6DC99d8B3a28a32aEDe42cf5E3617196642323f9",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x4B9cF2b8311Ac5C269465a2E0e049B89F9830634",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    },
-    {
-        "address": "0x6f4EfAf5429703649BEAa30da7e934bB42993C47",
-        "blue": 0,
-        "red": 1,
-        "yellow": 3
-    },
-    {
-        "address": "0xa83192ae9d1A6b9bE6BE9EBa1Afbd718b981AFcF",
-        "blue": 0,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0xE48ab528F2B51Fa68E22d57069CfFaFCd4aA2b6C",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x05eD5A1Faa281EF34BB33cAC08c795EA5eAEdbd1",
-        "blue": 2,
-        "red": 1,
-        "yellow": 0
-    },
-    {
-        "address": "0x7607050a4F4b57a9996F3E53BB1374Cf15407B9b",
-        "blue": 0,
-        "red": 1,
-        "yellow": 1
-    },
-    {
-        "address": "0x7Bcd0569f8fA42E50538AdEf8EcebFFe03a0a48d",
-        "blue": 0,
-        "red": 0,
-        "yellow": 1
-    }
+  {
+    "address": "0xE5f8fb26FdEe365589c622ac89d39e93625D6c09",
+    "blue": 2,
+    "red": 2,
+    "yellow": 1
+  },
+  {
+    "address": "0x24A370429cC83ee449DAf04819e564932E8EA65e",
+    "blue": 2,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x0fAf99C4C8211a4a1fCb4DA8e3866C9c9f612DDf",
+    "blue": 1,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0x24227282c501F9AC33badbA624BdFd061efb759F",
+    "blue": 2,
+    "red": 4,
+    "yellow": 3
+  },
+  {
+    "address": "0x34EE160D57C7C14D018B6F751fAfd1060b560dB6",
+    "blue": 1,
+    "red": 2,
+    "yellow": 2
+  },
+  {
+    "address": "0x6Bd0c23B82Ab96ecB56DcA6A15A008ef28cc57Ec",
+    "blue": 2,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0xC37fB6cE766C486Ab03DB2DF8cFe425Caaf6D541",
+    "blue": 0,
+    "red": 2,
+    "yellow": 4
+  },
+  {
+    "address": "0x269502E7eE2ba8269f019B50985a2A290E32362b",
+    "blue": 1,
+    "red": 3,
+    "yellow": 0
+  },
+  {
+    "address": "0xD6C2f6960a44004ac0F5E792b1D6678bB13427d0",
+    "blue": 2,
+    "red": 2,
+    "yellow": 2
+  },
+  {
+    "address": "0xB2a21ac4ABC6f685F01343855EC0852dde222Be3",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0xB2d60143097b4F992BfBE955a22dbb2AcD9a8EAb",
+    "blue": 2,
+    "red": 2,
+    "yellow": 1
+  },
+  {
+    "address": "0x565196152F8A4066a51b498a44A9981145d441Ff",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0xc375A30913B61b0d7750aB613cDd8793AaBa9272",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x0DA2f3401296427D302326CdF208B79f83Abc995",
+    "blue": 6,
+    "red": 10,
+    "yellow": 12
+  },
+  {
+    "address": "0x9CaDc50e6672b9466316dc26eA995D38AbCed675",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x77771Eb9Efc4FfD5E8dC2eb952fbBa20AEE5975C",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x7041e50b526D38230b085244f4B51cfb43953010",
+    "blue": 2,
+    "red": 5,
+    "yellow": 2
+  },
+  {
+    "address": "0x80E19E4492dF4A8FE9661099aBb693144372BcB4",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x744143D55Fa960F0364C23E6cb0c4D673C4E2017",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x609A8032F079DDE95459A2d16fD34457e71cDbbf",
+    "blue": 5,
+    "red": 7,
+    "yellow": 6
+  },
+  {
+    "address": "0x6ADBd11803E39853d65699Ddc6fa1d19f73F9e3E",
+    "blue": 1,
+    "red": 3,
+    "yellow": 2
+  },
+  {
+    "address": "0x8C3e3eD2DA1FFb6BD6fEFCbC938fE22a390eA579",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x0b3462BE80bA613435b4458e0da34F7a53EBF4b2",
+    "blue": 0,
+    "red": 2,
+    "yellow": 0
+  },
+  {
+    "address": "0xF408A40E46a3953684985fa46a625bA1B5573a9B",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x81FB8D312Aaa2b4A4343C59C1E22A3464eF460a7",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x15a62F8aa28d45F726453c5fdFdCe242135EfB76",
+    "blue": 0,
+    "red": 2,
+    "yellow": 0
+  },
+  {
+    "address": "0x7a1b7f694772672bA4154E9D05e39E489De48344",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x56B283376f770713D1B77BcF9481bE26812950aA",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xD472D2171CC42846ecE5FCA08239265Ff0b8deF2",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x51047Ac8977d0DD35F3E1F35d75DDf81b8989f3D",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0xEdd876424B9ec85109421D14C27E954b87825312",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x14382e6bd66bBd0bF1F421e9E76EF166b8b1FD70",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x8dE9F7e78Fb5bEEA2Ad6E3a333Ba4f0669D9C594",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xD857CcacaaFB91806BBF1f4016bBC57d26D7174c",
+    "blue": 4,
+    "red": 1,
+    "yellow": 6
+  },
+  {
+    "address": "0x8D3f81dE6ACDA2EcCd69F542526ffB864FAE600b",
+    "blue": 1,
+    "red": 0,
+    "yellow": 3
+  },
+  {
+    "address": "0xeE7601251B3fe157aa52dDB9EA06b7Ae401Da978",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x9c2b02Ea74948FB6C7ea142Ba14c4DF5CCbC35Ee",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x2fA08Fcc7e6FAf795417c3A73189939c7a818817",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x3D47ecD659F2308731A33792761375c1f82F1228",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xa8c6990BC778611Ffd5B94Db6BeFefC7aE74b147",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x882978E05a0097157948020e151E7A3aa810f26E",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x4055888f80B34758f7126d0e2Cc24A12B69e1cc9",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0xC59523e69Dc4EF360702fE9cAB9ac7376B5a4cB2",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0xef77Cf894ED766B233e2009658e55f49D6C3440d",
+    "blue": 2,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0xCC8a4Bd7B33938a6331C7727667eDe9C9ff1341e",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x48E130835fFeb0B4dDaDC86e1a8a8bbdAB023988",
+    "blue": 5,
+    "red": 1,
+    "yellow": 2
+  },
+  {
+    "address": "0xb4BfFcfeDC5E129fc960df7399e7FA23810156d1",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x42D5eC165226B750174BaB221CFDf5D347d5BD54",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x21B83B33583e28953F604a236aE3576C57Ff526c",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xA6A55f02c30e46cF365C0cE07D1C086AB3379307",
+    "blue": 2,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x5BC07EFF0B6EbF3468131213a3273124F40092Ab",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0xc50e2b4ea7B6413639F7517aB02cbf579a18AA7d",
+    "blue": 0,
+    "red": 3,
+    "yellow": 1
+  },
+  {
+    "address": "0x49E1c65c4fE683b7C904319B5C66C10EB49c240C",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x3219f132D5D1915363bB04BA97738cCd2518e867",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0xfbcC7a8ecF4FEd1FC6948a357198D51d33CD6C5E",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x353285385ED77d1E90d3788C74bDFA2534c11ebD",
+    "blue": 1,
+    "red": 4,
+    "yellow": 3
+  },
+  {
+    "address": "0xa5F37E1E15E81DfDA6dFD411eC741F25ABf210cE",
+    "blue": 2,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x80a75c8B10e5B0cdffC40E4CC9ac9752f1929A78",
+    "blue": 0,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0x7DF76FDEedE91d3cB80e4a86158dD9f6D206c98E",
+    "blue": 7,
+    "red": 18,
+    "yellow": 9
+  },
+  {
+    "address": "0xf3Fbb2c0A711529eF9b81fE59a5Ef5b8f1E0eB27",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x17b76551FF8d26D692DA2B9ba02Dea9D3EcDDE55",
+    "blue": 1,
+    "red": 2,
+    "yellow": 1
+  },
+  {
+    "address": "0x68f437Fecc4Cb129EeDD38037F892CE2595Df1E6",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0xF5da47208BB8FE003f452569d2dc29Ae1E8fABa6",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x7F1c6d0017915F2DC140C96FfEF2eEe1D9DcEAD4",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0xfDd0eA398A0bBDC08B35D2db53a7BBb70223d78b",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0xd965c0bE4403D0301fE15b3e0b16c7FB9E82072f",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x5f2175a85aA9E7300C83bE7958bF395Dc7Ec7795",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x542726357a133069e26DBE96930Bdbe393cD843C",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x4716A6058E7916Be509F6d93a8986867E6ac8FDe",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x43e1f5B962F9205Bbc22c8A8E9984BD324782437",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0xa63967e4E87844972162d6b6897f4405f9903Ff2",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x2c3474Bfe64cD9748be69D24c30cC91639265e68",
+    "blue": 2,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0xEA32512e8C872AAb94329Cb737722CD6a68904Fb",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x474870F9cD749c140791C013F62b3D82324C8841",
+    "blue": 2,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xBe3BF9Bb42bF423695B792250BE206C9A58e2dE1",
+    "blue": 1,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x8Eb07e2f87198FE19961fB4AC8046e54639B0b83",
+    "blue": 2,
+    "red": 5,
+    "yellow": 5
+  },
+  {
+    "address": "0xEe0D226287F838Da6aB7eB10F72bdc14b735C168",
+    "blue": 0,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0x59A6aF1535E79cC059B328A45B659E8D59C297CB",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x3546BD99767246C358ff1497f1580C8365b25AC8",
+    "blue": 1,
+    "red": 2,
+    "yellow": 1
+  },
+  {
+    "address": "0x784dac29eA1430752F22cac3e46ed795Ac38c4B0",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x510497CA2fb35a3cD97f3e5aDCdaFABb9e48eD36",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x752e04A3460B31A47f7BBD4153D7b76baC3eebc8",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x961d12c4C8af611bC0cA5804B2d261155b385AA5",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0xEf43e1B0D014cd1DCFE706993713B2469707656b",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x3c01Bc75176b08c89CA25Ea43bD6E3c93d75bf73",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x1625600b38DFA50E3A29A93d5dD210360630E527",
+    "blue": 4,
+    "red": 2,
+    "yellow": 3
+  },
+  {
+    "address": "0xE633A9e4CB215aDbfA69A7b468b7FEf5D2ed71Bf",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x86aD40B7B57551402E191eB2E51dDe23DEBd9E13",
+    "blue": 0,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0xdC190d7cEA8e8bf0b381617062200C10CFFF0A91",
+    "blue": 6,
+    "red": 3,
+    "yellow": 3
+  },
+  {
+    "address": "0xB46638bF5509Fe9B81a69875AeC18aaB00160eB7",
+    "blue": 2,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x034d2F43C33f0cfF711A1afddb0D555A2Dfe4585",
+    "blue": 2,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x3dFF236850afF41158182bd032b07Df8ADB8C5f3",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x26dD4199269bec9457F84ADb029dB917A910c711",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0xfEaC48b8ad13A5Cde14898aC2ceF8CFe1B6F2df2",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x4f524DEC3deDE837Be26a51D3095239DD2AF385b",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xDdAfC3Bcde71b1f2f8220068C70555d257B4484B",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x09B50000E8366309283f2733E6fb6aB59370C9ae",
+    "blue": 14,
+    "red": 8,
+    "yellow": 8
+  },
+  {
+    "address": "0x2f778bb1a3Ff2f311C3B25e21A2027d1FFAc7700",
+    "blue": 1,
+    "red": 1,
+    "yellow": 8
+  },
+  {
+    "address": "0x7213A4764125B3fBBAC5d4BA4750448b10a018C7",
+    "blue": 0,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0x54339Ac9c4E197b2C24A969bcc59c51939350CB2",
+    "blue": 0,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0x6b1D635d090FCb2A27548b2AE22C352137002898",
+    "blue": 2,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x9d093424C715385b4B9Ab1BDF729543dF5888943",
+    "blue": 3,
+    "red": 3,
+    "yellow": 3
+  },
+  {
+    "address": "0x22BC52BF65b56e62e88F0CE08EF17b70F1043c81",
+    "blue": 0,
+    "red": 2,
+    "yellow": 0
+  },
+  {
+    "address": "0x30119E6DA1578F721cf5e9945b148Ae2E512ca01",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x548E86f72F5EA60874E18ED421E4Cd84659FC486",
+    "blue": 3,
+    "red": 5,
+    "yellow": 8
+  },
+  {
+    "address": "0x450844AB03C3c9Aef4e81aa785f6730DECc2Fa64",
+    "blue": 2,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x4fa6E82de003a3855DfdC380A29ce9F3660cAB8F",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x24a2183e1fB19d10719b34A31320Bd4aCE6a43c2",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0xE7a70BC6f94Dac32ab5a5D6C2D9964254348E5DD",
+    "blue": 2,
+    "red": 2,
+    "yellow": 3
+  },
+  {
+    "address": "0xB476F443F2Cc8738b09C94A12550b8CCfF557FFD",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x860AE585009bC4d04430b787caD6d5A62400787c",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x752a19d348399170f57D3b9bE81e823DC0B631A2",
+    "blue": 0,
+    "red": 2,
+    "yellow": 0
+  },
+  {
+    "address": "0xFf5E190e1362605a39Dd7a235Ba69F5f14FE1430",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0xcaB6e2961cd5d36DB4d7Baf26D29B75b0f5BD171",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x3FE7493385EAAE7ec98DC33f77b4fBe71aeb5Edd",
+    "blue": 1,
+    "red": 2,
+    "yellow": 0
+  },
+  {
+    "address": "0x12f8952B2b7e64a3A50868BcF7155253786d21Bc",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x64A4429038A43264898e09557a548093bFBB465f",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x4B725e4CA093156850fcd86eA11A516a8362F85A",
+    "blue": 0,
+    "red": 2,
+    "yellow": 1
+  },
+  {
+    "address": "0x99599Eb15e86c4aA5eBb440C49614BE0dd901603",
+    "blue": 0,
+    "red": 1,
+    "yellow": 2
+  },
+  {
+    "address": "0xd27FC8AEE201Ec6a35f3AE32C457D04c44965158",
+    "blue": 0,
+    "red": 0,
+    "yellow": 3
+  },
+  {
+    "address": "0x6b4D7A4544a1E71655d241F9627EF1EB06E741aE",
+    "blue": 1,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0x9FC718829f6E281bA597cC41362AA2D5590b544c",
+    "blue": 0,
+    "red": 2,
+    "yellow": 1
+  },
+  {
+    "address": "0x7bFE09bA46a974deD1334B8671B836f7F35cEd5F",
+    "blue": 1,
+    "red": 0,
+    "yellow": 3
+  },
+  {
+    "address": "0x1bfaAF82DA60ec7ecE04cd21691cd31b05d7c157",
+    "blue": 0,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0x61800F3230A6954888032a5f0bC37a7611a719Ae",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0xfb83388Cb78A07Bd7e163E70Aecd1d1e2a19D81E",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x5741553f19A9E0cf007118d6bCCD14AE42280292",
+    "blue": 0,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0x0Ca974E2937d0F06B3631e0a5504406cC62F4eBf",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0xBdF18eCc3325d7598Dcf60B970b64357Bd8C4C9F",
+    "blue": 1,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x3A7f6bdf06851d41Df38aaf1fe9A6aa3582bE104",
+    "blue": 1,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0x344066cd5fdD81CBCc402E900d62b4c4211beB48",
+    "blue": 0,
+    "red": 2,
+    "yellow": 0
+  },
+  {
+    "address": "0xf32A1CA887C4A187a2989eb9E3cF1D301816685a",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x26439aEB008d63B6686798b5F08a84C7AbeFbd80",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x277c74f45724945b2066F305fcb5a609312390E2",
+    "blue": 0,
+    "red": 1,
+    "yellow": 3
+  },
+  {
+    "address": "0x1f59925DCb315bB3ADAb3F18277c456AB73408b0",
+    "blue": 5,
+    "red": 8,
+    "yellow": 4
+  },
+  {
+    "address": "0x9Fcd585BCfD123e3FD5800CEae06618Ca9BdE218",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xb8c2A8ca44E96d970802DFd9261662C81c17F47D",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x08a6c5774ee60FC737b91F9DE1274ACDb638b337",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x9C51532Ef51ab720514b5acAf97Fe6C600FbFb54",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x2AB6f51F76a8BFAa260fFa7792e5B399EE0309B2",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0xae52649e1e9d280Bf33F64829e0810D96c30C929",
+    "blue": 0,
+    "red": 1,
+    "yellow": 4
+  },
+  {
+    "address": "0x377895405bC4821379b7163a0a26DFC063e67215",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0xE74F61730001BcCE09B2006b176Ab1BabDE27eA7",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x968AF8c01D117Ac36AbcD1374eee7799Bf53CF42",
+    "blue": 0,
+    "red": 2,
+    "yellow": 1
+  },
+  {
+    "address": "0x499cD54e5B360ECD071905866D64065eb7196Ba5",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x30D367A89E40fAC84EA3Bab307238aD2071d119d",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x9388a1C6070932da551bEb97D597A36735Dd7835",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x910eD86248A4aFc2814E115aE415ac94198168d7",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x8132eC8C2574c133bDC5C7D4CB220C11373357e3",
+    "blue": 0,
+    "red": 1,
+    "yellow": 2
+  },
+  {
+    "address": "0x08B4D07D6EE91Ff17036a64892A12a9df09AC77D",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x584D65B4B89CD40d941D87CD4FCceab774373dEa",
+    "blue": 3,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x6609DFA1cb75d74f4fF39c8a5057bD111FBA5B22",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0xa65B8415318f7A94730f68b443EFcf9C30cfbD14",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x4F5EfCAb1274BD8137B81E7c40E05160c6C936c3",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x9a5D16e62D0E95348EC940504c98A331bd7b8338",
+    "blue": 0,
+    "red": 2,
+    "yellow": 0
+  },
+  {
+    "address": "0xe87B56Cf45B98E2cD37B56935b6fdD7A9F37962c",
+    "blue": 4,
+    "red": 5,
+    "yellow": 0
+  },
+  {
+    "address": "0xaf469C4a0914938e6149CF621c54FB4b1EC0c202",
+    "blue": 2,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x6f0B770619B49Bc42022608feAA21670F082A964",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xFd4938b02074DF1d3Aa15a97Ee561f40704b2195",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x96A6AE1D864D3B3A8fA8D98Ee364Dc33137b5D2d",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0xCf987D6DCF74525d229E5b3ccdF938a38161c48b",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x4Cf22e6c6c4e4Ffb4B5B86E5b0FC5c6fa5dab62D",
+    "blue": 1,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0xdEfB4c3bFeA0Fd4d99854434A5640baF26E46BA5",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xDaE5bcEE5fEd1C2D1d17610424c215169Df5b1Aa",
+    "blue": 1,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0xB3D264380FFcf9E764A16Ee9Addd08bdCF46093f",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x127c1Df80c7426dBEbb070E20d304c5dc6C169f3",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xa0cb9dca76BBFd9068162A834A547D5208C085Ca",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x7b15d62B1FcF15DDD99FC09235d6492737C1e630",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x56Ee860AEfa530d1Eda453602aC08fD6b9334332",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x0737880a1866Bfbda9dea62c91BA00df6C79f395",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x6265aaFC8D25B36f97181C44d0EB6693f00EbA17",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x55EEeE5F33036885C336a78564522e89B69c26dC",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x44AD56B79f26BbE75a7E810E862636700780aC98",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x31b3755208F110076c3f5FD51A8E95218Ba9b8DD",
+    "blue": 1,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x2A44195b273dA05b0071D801C996B83E7FB460cA",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xbFADFF92855cBb45495Df33E45D91170E478B2B5",
+    "blue": 3,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x09f40C325BCE1ea2EfDb534779F3962F168f5e11",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x1a544fb35851B41864216C65c2b00b17694557a4",
+    "blue": 0,
+    "red": 2,
+    "yellow": 1
+  },
+  {
+    "address": "0xc3cC7F3DBfd0b05bE31eAA070719C1cFC96d2E2B",
+    "blue": 0,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0xBeb0737585bd8a9306e2777966d413bF3735861B",
+    "blue": 0,
+    "red": 10,
+    "yellow": 0
+  },
+  {
+    "address": "0xF9107317B0fF77eD5b7ADea15e50514A3564002B",
+    "blue": 0,
+    "red": 0,
+    "yellow": 2
+  },
+  {
+    "address": "0xEA9eCa5647c7F7FcbE13594435d2969c42D9429f",
+    "blue": 3,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x93953F26C713627B6d6f413954a3994A22b69E4C",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0xCB84FDe82519e6FA12d12c8800b7a9c55B0315cd",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x012f3976C93260F7E4CE1289638278a870b6678D",
+    "blue": 2,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x720E18bC7865Bd329128dB6E5954FB7A1898d8B9",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x98e7dEd15754b8554ca689997122FEEc2274Ffa5",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x8b22244ADCDa6853548e08952586C13fF020987c",
+    "blue": 5,
+    "red": 4,
+    "yellow": 1
+  },
+  {
+    "address": "0x2b7c090558E57fdA174CD70d1c51E654165CD16C",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0xD172680150daCF83d136d7D6f6083fbDa4B306D0",
+    "blue": 1,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x477b6F91c9481fC64E9080ffD00527CD53563dD6",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xF9B957c410AF8067719A9c96F85A46046961A3BC",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x64Bf7a7b25A5b15c1572aaF464204A8a528123f4",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x7A0031058ca934F14CB85fC222c78304174B07c0",
+    "blue": 3,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x1a668a81d13bd372e7e39438b75d79e7E28db0E5",
+    "blue": 1,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0xe500EeA962b32639d89BB7062dF7C17be17202c0",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x9723a9C75A0b05A1432cA729593013B0C762c6ba",
+    "blue": 0,
+    "red": 2,
+    "yellow": 0
+  },
+  {
+    "address": "0x68cA5862E86A235B7c89A8C1cbf82BC91e8528b1",
+    "blue": 2,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x679B3E6c39c07BAC7d4d55B8b7E9a9aA40c94C8f",
+    "blue": 2,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x6DC99d8B3a28a32aEDe42cf5E3617196642323f9",
+    "blue": 1,
+    "red": 2,
+    "yellow": 2
+  },
+  {
+    "address": "0x4B9cF2b8311Ac5C269465a2E0e049B89F9830634",
+    "blue": 1,
+    "red": 1,
+    "yellow": 3
+  },
+  {
+    "address": "0x6f4EfAf5429703649BEAa30da7e934bB42993C47",
+    "blue": 0,
+    "red": 1,
+    "yellow": 3
+  },
+  {
+    "address": "0xa83192ae9d1A6b9bE6BE9EBa1Afbd718b981AFcF",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0xE48ab528F2B51Fa68E22d57069CfFaFCd4aA2b6C",
+    "blue": 0,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x05eD5A1Faa281EF34BB33cAC08c795EA5eAEdbd1",
+    "blue": 3,
+    "red": 1,
+    "yellow": 1
+  },
+  {
+    "address": "0x7607050a4F4b57a9996F3E53BB1374Cf15407B9b",
+    "blue": 2,
+    "red": 2,
+    "yellow": 1
+  },
+  {
+    "address": "0x7Bcd0569f8fA42E50538AdEf8EcebFFe03a0a48d",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x3507dF73e37cCd478788256F1D86E18c40D0069A",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x58d20F3E2c21f3e27d1618De4F712d39413b04cc",
+    "blue": 3,
+    "red": 2,
+    "yellow": 0
+  },
+  {
+    "address": "0xd13C2691E0715efc6070F48242bf4317c84884F1",
+    "blue": 1,
+    "red": 2,
+    "yellow": 1
+  },
+  {
+    "address": "0x2504407012559909eB9Ea18273D2617D0c658243",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0xAAC622A14A6b56C56450618fe607285A3ee312a9",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x44e0d0bbb756f489E2faa4Fd3426d032af037C47",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x1811caE4730e60005E25afa31516F11A7abd13A5",
+    "blue": 1,
+    "red": 0,
+    "yellow": 0
+  },
+  {
+    "address": "0x4E9432276aBb8A4E83f7C4fE08ebC3C061dAC904",
+    "blue": 2,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0xf92B6EDD0d62e12f718A5a442D10981C1F6537cF",
+    "blue": 0,
+    "red": 3,
+    "yellow": 1
+  },
+  {
+    "address": "0x00C71F8C497D8950553Fcb874F4A8Cf74Dc88629",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x3C322f51Aad1bb795058128A3202b6ba28e695AA",
+    "blue": 0,
+    "red": 1,
+    "yellow": 0
+  },
+  {
+    "address": "0x7E8Fa19715A1Df54c555bb9C2b0b104DbE20bC07",
+    "blue": 0,
+    "red": 0,
+    "yellow": 1
+  },
+  {
+    "address": "0x4d68f6A11F53799Fe16F59E936F5Fe600f2B9900",
+    "blue": 1,
+    "red": 2,
+    "yellow": 1
+  },
+  {
+    "address": "0xe9Bd09B296409174cE4878ea929962B1471cb2f7",
+    "blue": 0,
+    "red": 2,
+    "yellow": 0
+  },
+  {
+    "address": "0x0c194F308b623c036c8c7fCd1C084dE4BdeE2a67",
+    "blue": 1,
+    "red": 1,
+    "yellow": 0
+  }
 ]
